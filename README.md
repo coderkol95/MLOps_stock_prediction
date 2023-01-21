@@ -1,6 +1,5 @@
-# AzureML_projects
 
-Repository to keep all Azure work.
+Will discontinue development on this branch as Azure ML SDK v2 has come out.
 
 TODO:
 [X] - Code to upload/download from containers

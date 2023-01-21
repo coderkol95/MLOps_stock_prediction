@@ -6,6 +6,7 @@ from TickerData import download, query
 from Models import lstm_model
 import torch
 from datetime import datetime
+import os
 
 def query_data(args):
 
@@ -32,7 +33,7 @@ def training_data(series, loookaheadSize=5):
 
 def train(args):
 
-    if ~args.filePath:
+    if args.filePath is None:
         data=query_data(args)
         data = list(data[f"{args.ticker}_Close"].values())
     else:
@@ -82,11 +83,14 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
+    print("OS Path", os.getcwd())
+
     try:    
-        if args.ticker is None:
-            raise ValueError("Please enter ticker which you want to train the model on. Available options: HDFCLIFE.NS, NESTLEIND.NS, KOTAKBANK.NS, INDUSINDBK.NS, TATASTEEL.NS, ITC.NS, ONGC.NS, TITAN.NS, ULTRACEMCO.NS, BAJAJFINSV.NS, BAJFINANCE.NS, BRITANNIA.NS, BAJAJ-AUTO.NS, COALINDIA.NS, BHARTIARTL.NS, TATACONSUM.NS, LTI.NS, CIPLA.NS, MARUTI.NS, ICICIBANK.NS, APOLLOHOSP.NS, NTPC.NS, HEROMOTOCO.NS, HINDALCO.NS, WIPRO.NS, TCS.NS, ADANIENT.NS, MM.NS, TECHM.NS, RELIANCE.NS")
-        if args.start is None or args.end is None:
-            raise ValueError("Please define both start and end for downloading data.")
+        if args.filePath is None:
+            if args.ticker is None:
+                raise ValueError("Please enter ticker which you want to train the model on. Available options: HDFCLIFE.NS, NESTLEIND.NS, KOTAKBANK.NS, INDUSINDBK.NS, TATASTEEL.NS, ITC.NS, ONGC.NS, TITAN.NS, ULTRACEMCO.NS, BAJAJFINSV.NS, BAJFINANCE.NS, BRITANNIA.NS, BAJAJ-AUTO.NS, COALINDIA.NS, BHARTIARTL.NS, TATACONSUM.NS, LTI.NS, CIPLA.NS, MARUTI.NS, ICICIBANK.NS, APOLLOHOSP.NS, NTPC.NS, HEROMOTOCO.NS, HINDALCO.NS, WIPRO.NS, TCS.NS, ADANIENT.NS, MM.NS, TECHM.NS, RELIANCE.NS")
+            if args.start is None or args.end is None:
+                raise ValueError("Please define both start and end for downloading data.")
     except:
         raise ValueError("Error with input args")
 

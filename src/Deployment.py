@@ -45,5 +45,7 @@ def run(raw_data):
     tensor_data = torch.from_numpy(scaled_data.reshape(-1,1,5))
 
     result, _ = model(tensor_data.float())
+    
+    result = scaler.inverse_transform(result.detach().numpy())
 
     return result.tolist()

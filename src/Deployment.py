@@ -20,28 +20,30 @@ def init():
 
         def forward(self, x, hidden=None):
             x, hidden = self.lstm1(x)
+            x = x[:,-1]
             x = self.out(x)
-            return x.flatten()
+            return x, hidden
 
     scalerpath = os.path.join(
     os.getenv("AZUREML_MODEL_DIR"), "outputs/scaler.pkl")
-    print(scalerpath)
     # deserialize the model file back into a sklearn model
     with open(scalerpath, 'rb') as f:
         scaler = pickle.load(f)
 
     modelpath = os.path.join(
     os.getenv("AZUREML_MODEL_DIR"), "outputs/modelstock_pred_2023-01-25.pth")    
-    print(modelpath)
     model = lstm_model()
-    model = model.load_state_dict(torch.load(modelpath))
+    model.load_state_dict(torch.load(modelpath))
+    model.eval()
 
 def run(raw_data):
 
-    data = json.loads(raw_data)["data"]
-    data = np.array(data)
-    scaled_data = scaler.transform(data)
+    data = json.loads(raw_data)
+    data = np.array(list(data.values())).astype(float)
+    scaled_data = scaler.transform(data.reshape(-1,1))
 
-    result = model.predict(scaled_data)
+    tensor_data = torch.from_numpy(scaled_data.reshape(-1,1,5))
+
+    result, _ = model(tensor_data.float())
 
     return result.tolist()

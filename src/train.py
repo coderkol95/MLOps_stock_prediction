@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 import logging
 import mlflow
 import pickle
+import numpy as np
 
 def series_to_tensors(series, lookaheadSize=5):
 
@@ -25,10 +26,13 @@ def series_to_tensors(series, lookaheadSize=5):
 
 def dataprep(args):
 
-    stockData = pd.read_csv(args.data)
+    stockData = pd.read_csv(args.data, index_col='Unnamed: 0')
     stock_train_df, stock_test_df = train_test_split(stockData, test_size=args.test_train_ratio)
 
-    scaler = MinMaxScaler.fit(stock_train_df)
+    print(stock_train_df)
+
+    # Instead of this use LayerNorm or BatchNorm in the neural net
+    scaler = MinMaxScaler().fit(stock_train_df)
     stock_train_df = scaler.transform(stock_train_df)
     stock_test_df = scaler.transform(stock_test_df)
 
@@ -46,8 +50,9 @@ class lstm_model(torch.nn.Module):
 
     def forward(self, x, hidden=None):
         x, hidden = self.lstm1(x)
+        x = x[:,-1]
         x = self.out(x)
-        return x.flatten()
+        return x, hidden
 
 def train(trainset):
 
@@ -65,7 +70,7 @@ def train(trainset):
             feats, target = data
             optim.zero_grad()
 
-            y_p = seq_model(feats.float())
+            y_p,_ = seq_model(feats.float())
             loss = torch.nn.functional.mse_loss(y_p.float(), target.float())
 
             loss.backward()
@@ -82,6 +87,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--registered_model_name", type=str, help="model name")
     parser.add_argument("--data", type=str, help="Path to input data")
+    parser.add_argument("--local_model_name", type=str, required=True, default=0.25)
     parser.add_argument("--test_train_ratio", type=float, required=False, default=0.25)
 
     args = parser.parse_args()
@@ -92,26 +98,11 @@ def main():
 
     trainedModel = train(trainset)
 
-    pickle.dump(scaler, open('scaler.pkl','wb'))
-    model_file = f"modelstock_pred_{str(datetime.now().date())}.pth"
-    torch.save(trainedModel, path = model_file)
+    print(os.getcwd())
 
-    # Registering the model to the workspace
-
-    # job_name = "<JOB_NAME>"
-
-    # run_model = Model(
-    #     path=f"azureml://jobs/{job_name}/outputs/artifacts/paths/scaler.pkl",
-    #     name="MinMaxScaler,
-    #     description="Scaler object",
-    #     type=AssetTypes.MLFLOW_MODEL,
-    # )
-    #     run_model = Model(
-    #     path=f"azureml://jobs/{job_name}/outputs/artifacts/paths/{model_file}",
-    #     name="run-model-example",
-    #     description="Model created from run.",
-    #     type=AssetTypes.MLFLOW_MODEL,
-    # )
+    pickle.dump(scaler, open('./outputs/scaler.pkl','wb'))
+    model_file = f"./outputs/{args.local_model_name}.pth"
+    torch.save(trainedModel.state_dict(), model_file)
 
 if __name__ == "__main__":
     main()

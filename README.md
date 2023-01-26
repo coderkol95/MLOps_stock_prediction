@@ -1,10 +1,8 @@
-# AzureML_projects
-
-Repository to keep all Azure work.
+Azure ML SDK v2
 
 TODO:
 [X] - Code to upload/download from containers
-[ ] - Create script for environment
+[X] - Create conda environment
 [ ] - Create script for compute creation/shutdown/deletion
 [ ] - Training script
 [ ] - Execute pipeline training

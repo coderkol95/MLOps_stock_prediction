@@ -1,2 +1,3 @@
 config/config.json
 config/storage_config.json
+.logs.log

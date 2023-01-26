@@ -36,7 +36,8 @@ def trigger_deployment(
         instance_count=1,
     )
     # create the deployment:
-    ml_client.begin_create_or_update(deployment)
+    ml_client.begin_create_or_update(deployment).wait()
+    
     # blue deployment takes 100 traffic
     endpoint.traffic = {deployment_details["name"]: deployment_details["traffic"]}
-    ml_client.begin_create_or_update(endpoint)
+    ml_client.begin_create_or_update(endpoint).wait()

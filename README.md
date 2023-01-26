@@ -1,12 +1,19 @@
 Azure ML SDK v2
 
 TODO:
-[X] - Code to upload/download from containers
-[X] - Create conda environment
-[ ] - Create script for compute creation/shutdown/deletion
-[ ] - Training script
-[ ] - Execute pipeline training
-[ ] - Expose endpoint using API
-[ ] - Web app to consume API
-[ ] - Automatic retraining
-[ ] - Replicate for another project
+
+1. Build pipeline
+
+    - [ ] Pytests with code coverage
+    - [ ] github actions for CI
+
+2. Retraining pipeline
+    
+    - [ ] Data pipeline updation based on schedule
+    - [ ] Model re-training and comparison with previous models
+    - [ ] Model registration if it is good enough - performance, fairness, bias, equity and other responsible AI practices
+
+3. Release pipeline to QA/Prod
+
+    - [ ] Parallely deploy the latest model
+    - [ ] Monitor model and underlying infrastructure performance

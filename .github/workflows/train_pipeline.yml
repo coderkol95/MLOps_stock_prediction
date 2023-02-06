@@ -3,7 +3,7 @@ on:
   schedule:
     - cron: '1 * * * 2'
 jobs:
-  initalisation:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: checkout repository
@@ -17,12 +17,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+  azure-setup:
+    runs-on: ubuntu-latest
+    steps:
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CREDS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
   dataupload:
     runs-on: ubuntu-latest
     steps:
-    - name: upload data to azure
-      env:
-        SUBSCRIPTION_ID: ${{secrets.SUBSCRIPTION_ID}}
-        RESOURCE_GROUP: ${{secrets.RESOURCE_GROUP}}
-        WORKSPACE_NAME: ${{secrets.WORKSPACE_NAME}}
+    - name: download the data
       run: python jobs/data.py
+    - name:  
+      run: az ml data create -f jobs/data.yml

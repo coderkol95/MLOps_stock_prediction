@@ -20,12 +20,12 @@ def get_ticker_data(TICKER:str):
         # tickerData = tickerData['Close']
         # logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
-        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+        with open(os.environ['GITHUB_OUTPUT'], 'w') as fh:
             print(f'filename={TICKER}', file=fh)
         with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-            print(f'Date={[1,2,3]}', file=fh)
+            print(f"Date={{'values':[1,2,3]}}", file=fh)
         with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-            print(f'Close={[10,20,30]}', file=fh)
+            print(f"Close={{'values':[10,20,30]}}", file=fh)
         # print(tickerData['Close'])
     except:
         logging.error("Problem with downloading data from YFinance.")

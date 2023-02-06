@@ -1,0 +1,4 @@
+yfinance==0.2.4
+pandas==1.5.3
+azure-ai-ml==1.3.0
+azure-identity==1.12.0

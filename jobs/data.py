@@ -12,7 +12,7 @@ import pandas as pd
 
 def get_ml_client():
 
-    with open('./config/config.json','r') as f:
+    with open('../config/config.json','r') as f:
         configs=json.loads(f.read())
 
     subscription_id, resource_group, workspace = configs['subscription_id'], configs['resource_group'], configs['workspace_name']
@@ -47,7 +47,7 @@ def get_ticker_data(TICKER:str):
         tickerData['Ticker']=TICKER
         tickerData = tickerData['Adj Close']
         logging.info(f"Length of ticker data: {len(tickerData.index)}")
-        path = f'data/{TICKER}.csv'
+        path = f'../data/{TICKER}.csv'
         tickerData.to_csv(path)
     except:
         logging.error("Problem with downloading data from YFinance.")

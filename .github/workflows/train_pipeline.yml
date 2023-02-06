@@ -1,5 +1,8 @@
 name: data upload to azure
 on:
+  push:
+    branches:
+      - "data-upload-automation"
   schedule:
     - cron: '*/2 * * * *'
 jobs:
@@ -29,12 +32,13 @@ jobs:
       working-directory: cli
       continue-on-error: true
   dataupload:
+    needs: [build, azure-setup]
     runs-on: ubuntu-latest
     steps:
     - name: download the data
-      run: python jobs/data.py
-    - name: upload to azure
-      run: az ml data create -f jobs/data.yml
+      run: python jobs/download_ticker_data.py
+    # - name: upload to azure
+    #   run: az ml data create -f jobs/data.yml
 
 # # #
 # 1. Ensure Azure login job is working

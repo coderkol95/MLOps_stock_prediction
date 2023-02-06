@@ -2,18 +2,18 @@ name: data upload to azure
 
 on:
   schedule:
-      - cron: '*/10 * * * *'
+      - cron: '*/5 * * * *'
 jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
-        - name: setup python 3.
-          uses: actions/setup-python@v4
-          with: 
-            python-version: '3.8'
-        - name: install python packages
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r config/requirements.yml
-        - name: upload data to azure
-          run: python jobs/data.py
+      - name: setup python 3.10
+        uses: actions/setup-python@v3
+        with: 
+          python-version: "3.10"
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r config/requirements.yml
+      - name: upload data to azure
+        run: python jobs/data.py

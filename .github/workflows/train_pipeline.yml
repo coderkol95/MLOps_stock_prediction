@@ -29,7 +29,22 @@ jobs:
       continue-on-error: true
     - name: download the data
       run: python download_ticker_data.py
+      id: data
       working-directory: jobs
+    - name: write out csv
+      uses: gr2m/write-csv-file-action@v1.x
+      with:
+          path: data/{{steps.data.output.file_name}}.csv
+          columns: Date, Close
+          "Date": $ {{steps.data.output.Date}}
+          "Close": $ {{steps.data.output.data.Close}}
+    - run: git config --local user.email "action@github.com"
+    - run: git config --local user.name "GitHub Action"
+    - run: git add data
+    - run: git commit -m "data/{{steps.data.output.file_name}}.csv updated"
+    - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # - name: upload to azure
     #   run: az ml data create -f jobs/data.yml
 

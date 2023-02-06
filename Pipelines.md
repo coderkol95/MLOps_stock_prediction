@@ -2,6 +2,12 @@ Azure ML SDK v2
 
 # TODO:
 
+1. Print csv and send column data via JSON
+2. Accept these and write them out via csv
+3. Consume ticker data path
+4. Upload to Azure
+
+
 1. Build pipeline - Code changes to the repository : trigger=push
 
     - [ ] Pytests with code coverage

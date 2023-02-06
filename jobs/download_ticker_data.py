@@ -18,15 +18,14 @@ def get_ticker_data(TICKER:str):
             raise ValueError("No data found via YFinance.")
 
         tickerData['Ticker']=TICKER
-        tickerData = tickerData['Adj Close']
+        tickerData = tickerData['Close']
         logging.info(f"Length of ticker data: {len(tickerData.index)}")
-        path = f'data/{TICKER}.csv'
-        tickerData.to_csv(path)
+        print(f'::set-output name=file_name::{TICKER}')
+        print(f'::set-output name=Date::{1,2,3,4}')
+        print(f'::set-output name=Close::{10,20,30,40}')
+        print(tickerData['Close'])
     except:
         logging.error("Problem with downloading data from YFinance.")
-        path=None
-    finally:
-        return path
 
 # def upload_data(ml_client, path, TICKER):
 
@@ -58,6 +57,6 @@ if __name__=="__main__":
 
     TICKER="LT.NS"
     path = get_ticker_data(TICKER=TICKER)
-    print(f"path: {path}")
+
     # if path is not None:
     #     upload_data(ml_client,path, TICKER=TICKER)

@@ -36,12 +36,12 @@ jobs:
       with:
           path: data/{{steps.data.output.file_name}}.csv
           columns: Date, Close
-          "Date": $ {{steps.data.output.Date}}
-          "Close": $ {{steps.data.output.data.Close}}
+          "Date": $ {{steps.data.outputs.Date}}
+          "Close": $ {{steps.data.outputs.Close}}
     - run: git config --local user.email "action@github.com"
     - run: git config --local user.name "GitHub Action"
     - run: git add data
-    - run: git commit -m "data/{{steps.data.output.file_name}}.csv updated"
+    - run: git commit -m "data/{{steps.data.outputs.file_name}}.csv updated"
     - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

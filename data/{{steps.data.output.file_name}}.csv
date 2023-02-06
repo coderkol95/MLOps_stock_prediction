@@ -1,2 +1,0 @@
-Date,Close
-$ {{steps.data.output.Date}},$ {{steps.data.output.data.Close}}

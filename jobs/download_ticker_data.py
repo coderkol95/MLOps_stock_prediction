@@ -1,29 +1,28 @@
 from datetime import datetime, timedelta
 import logging
 import yfinance as yf
-import re
 import pandas as pd
 
 
 def get_ticker_data(TICKER:str):
 
     try:
-        start = str(datetime.today().date()-timedelta(days=366))
-        end = str(datetime.today().date()-timedelta(days=1))
+        # start = str(datetime.today().date()-timedelta(days=366))
+        # end = str(datetime.today().date()-timedelta(days=1))
 
-        tickerData=yf.download(TICKER,start=start, end=end, period='1d')
-        tickerData['Date']=[str(x)[:10] for x in tickerData.index]
+        # tickerData=yf.download(TICKER,start=start, end=end, period='1d')
+        # tickerData['Date']=[str(x)[:10] for x in tickerData.index]
 
-        if tickerData.shape[0]==0:
-            raise ValueError("No data found via YFinance.")
+        # if tickerData.shape[0]==0:
+        #     raise ValueError("No data found via YFinance.")
 
-        tickerData['Ticker']=TICKER
-        tickerData = tickerData['Close']
-        logging.info(f"Length of ticker data: {len(tickerData.index)}")
+        # tickerData['Ticker']=TICKER
+        # tickerData = tickerData['Close']
+        # logging.info(f"Length of ticker data: {len(tickerData.index)}")
         print(f'::set-output name=file_name::{TICKER}')
         print(f'::set-output name=Date::{[1,2,3,4]}')
         print(f'::set-output name=Close::{[10,20,30,40]}')
-        print(tickerData['Close'])
+        # print(tickerData['Close'])
     except:
         logging.error("Problem with downloading data from YFinance.")
 

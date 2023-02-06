@@ -39,7 +39,7 @@ jobs:
     #       "Date": $ {{ steps.data.outputs.Date }}
     #       "Close": $ {{ steps.data.outputs.Close }}
     - name: printer
-      run: echo "{{ steps.data.outputs.filepath }}, {{ steps.data.outputs.Date }}, {{ steps.data.outputs.Close }}
+      run: echo "${{ steps.data.outputs.filepath }}, ${{ steps.data.outputs.Date }}, ${{ steps.data.outputs.Close }}
     # - run: git config --local user.email "action@github.com"
     # - run: git config --local user.name "GitHub Action"
     # - run: git add data

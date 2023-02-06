@@ -13,6 +13,7 @@ Azure ML SDK v2
         Data pipeline updation based on schedule
         - [X] Batch
         - [X] Data validation, capture the SD [Not applicable in this use case]
+        - [ ] Delete local file - will do later
 
     - [ ] train: 
         Model re-training and publishing of metrics

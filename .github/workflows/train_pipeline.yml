@@ -40,13 +40,13 @@ jobs:
           "Close": ${{ steps.data.outputs.Close }}
     - name: printer
       run: echo ${{ steps.data.outputs.filename }}, ${{ steps.data.outputs.Date }}, ${{ steps.data.outputs.Close }}
-    # - run: git config --local user.email "action@github.com"
-    # - run: git config --local user.name "GitHub Action"
-    # - run: git add data
-    # - run: git commit -m "data/{{steps.data.outputs.file_name}}.csv updated"
-    # - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: git config --local user.email "action@github.com"
+    - run: git config --local user.name "GitHub Action"
+    - run: git add data
+    - run: git commit -m "data/{{steps.data.outputs.file_name}}.csv updated"
+    - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # - name: upload to azure
     #   run: az ml data create -f jobs/data.yml
 

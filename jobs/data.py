@@ -7,15 +7,16 @@ from azure.identity import DefaultAzureCredential
 import yfinance as yf
 import re
 import pandas as pd
+import os
 
 # logging.basicConfig(filename='../logs.log', encoding='utf-8', level=logging.INFO)
 
 def get_ml_client():
 
-    with open('config/config.json','r') as f:
-        configs=json.loads(f.read())
+    # with open('config/config.json','r') as f:
+    #     configs=json.loads(f.read())
 
-    subscription_id, resource_group, workspace = configs['subscription_id'], configs['resource_group'], configs['workspace_name']
+    subscription_id, resource_group, workspace = os.environ.get['SUBSCRIPTION_ID'], os.environ.get['RESOURCE_GROUP'], os.environ.get['WORKSPACE_NAME']
 
     try:
         credential = DefaultAzureCredential()

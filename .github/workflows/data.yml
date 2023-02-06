@@ -18,4 +18,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: upload data to azure
+      env:
+        SUBSCRIPTION_ID: ${{secrets.SUBSCRIPTION_ID}}
+        RESOURCE_GROUP: ${{secrets.RESOURCE_GROUP}}
+        WORKSPACE_NAME: ${{secrets.WORKSPACE_NAME}}
       run: python jobs/data.py

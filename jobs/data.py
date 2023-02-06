@@ -16,7 +16,7 @@ def get_ml_client():
     # with open('config/config.json','r') as f:
     #     configs=json.loads(f.read())
 
-    subscription_id, resource_group, workspace = os.environ.get['SUBSCRIPTION_ID'], os.environ.get['RESOURCE_GROUP'], os.environ.get['WORKSPACE_NAME']
+    subscription_id, resource_group, workspace = os.environ.get('SUBSCRIPTION_ID'), os.environ.get('RESOURCE_GROUP'), os.environ.get('WORKSPACE_NAME')
 
     try:
         credential = DefaultAzureCredential()

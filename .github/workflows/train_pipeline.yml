@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: checkout repository
-      uses: actions/checkout@v2 # Renamed branch to main before this execution
+      uses: actions/checkout@v2
     - name: setup python 3.9
       uses: actions/setup-python@v4
       with: 

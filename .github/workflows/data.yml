@@ -1,9 +1,9 @@
 name: data upload to azure
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '1 * * * 2'
 jobs:
-  build:
+  initalisation:
     runs-on: ubuntu-latest
     steps:
     - name: checkout repository
@@ -17,6 +17,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+  dataupload:
+    runs-on: ubuntu-latest
+    steps:
     - name: upload data to azure
       env:
         SUBSCRIPTION_ID: ${{secrets.SUBSCRIPTION_ID}}

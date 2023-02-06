@@ -21,8 +21,8 @@ def get_ticker_data(TICKER:str):
         tickerData = tickerData['Close']
         logging.info(f"Length of ticker data: {len(tickerData.index)}")
         print(f'::set-output name=file_name::{TICKER}')
-        print(f'::set-output name=Date::{1,2,3,4}')
-        print(f'::set-output name=Close::{10,20,30,40}')
+        print(f'::set-output name=Date::{[1,2,3,4]}')
+        print(f'::set-output name=Close::{[10,20,30,40]}')
         print(tickerData['Close'])
     except:
         logging.error("Problem with downloading data from YFinance.")

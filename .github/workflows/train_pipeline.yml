@@ -34,7 +34,7 @@ jobs:
     - name: write out csv
       uses: gr2m/write-csv-file-action@v1.x
       with:
-          path: data/${{ steps.data.output.filename }}.csv
+          path: data/${{ steps.data.outputs.filename }}.csv
           columns: Date, Close
           "Date": ${{ steps.data.outputs.Date }}
           "Close": ${{ steps.data.outputs.Close }}

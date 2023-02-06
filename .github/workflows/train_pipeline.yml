@@ -31,13 +31,15 @@ jobs:
       run: python download_ticker_data.py
       id: data
       working-directory: jobs
-    - name: write out csv
-      uses: gr2m/write-csv-file-action@v1.x
-      with:
-          path: data/{{ steps.data.output.filename }}.csv
-          columns: Date, Close
-          "Date": $ {{ steps.data.outputs.Date }}
-          "Close": $ {{ steps.data.outputs.Close }}
+    # - name: write out csv
+    #   uses: gr2m/write-csv-file-action@v1.x
+    #   with:
+    #       path: data/{{ steps.data.output.filename }}.csv
+    #       columns: Date, Close
+    #       "Date": $ {{ steps.data.outputs.Date }}
+    #       "Close": $ {{ steps.data.outputs.Close }}
+    - name: printer
+      run: echo steps.data.outputs.filepath, steps.data.outputs.Date, steps.data.outputs.Close
     - run: git config --local user.email "action@github.com"
     - run: git config --local user.name "GitHub Action"
     - run: git add data

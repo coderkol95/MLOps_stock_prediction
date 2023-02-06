@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 
 type: uri_file
-name: <name>
+name: 'LTI'
 description: <description>
-path: <uri>
+path: '../data/LTI.NS.csv'

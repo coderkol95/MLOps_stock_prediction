@@ -61,3 +61,15 @@ if __name__=="__main__":
     print(f"path: {path}")
     # if path is not None:
     #     upload_data(ml_client,path, TICKER=TICKER)
+
+
+# # #
+# 1. Ensure Azure login job is working
+# 2. Ensure downloaded file is saved
+# 3. Check if the file is saved in the yaml file using if clause
+# 4. Write out file params in a json or something
+# 5. If the file is saved, upload the file to Azure after reading the file params
+# 6. 
+# 7. 
+# 8. 
+# #

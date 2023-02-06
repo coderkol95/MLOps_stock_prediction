@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: download the data
-      run: python /jobs/download_ticker_data.py
+      run: python ./jobs/download_ticker_data.py
     # - name: upload to azure
     #   run: az ml data create -f jobs/data.yml
 

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import logging
 import yfinance as yf
 import pandas as pd
-
+import os
 
 def get_ticker_data(TICKER:str):
 
@@ -19,9 +19,13 @@ def get_ticker_data(TICKER:str):
         # tickerData['Ticker']=TICKER
         # tickerData = tickerData['Close']
         # logging.info(f"Length of ticker data: {len(tickerData.index)}")
-        print(f'::set-output name=file_name::{TICKER}')
-        print(f'::set-output name=Date::{[1,2,3,4]}')
-        print(f'::set-output name=Close::{[10,20,30,40]}')
+
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'filename={TICKER}', file=fh)
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'Date={[1,2,3]}', file=fh)
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'Close={[10,20,30]}', file=fh)
         # print(tickerData['Close'])
     except:
         logging.error("Problem with downloading data from YFinance.")

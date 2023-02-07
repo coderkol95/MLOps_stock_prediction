@@ -93,7 +93,7 @@ if __name__=="__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('TICKER',type=str, help="TICKER from YFinance that you want to download.")
+    parser.add_argument('--TICKER',type=str, help="TICKER from YFinance that you want to download.")
     args = parser.parse_args()
     TICKER=args.TICKER
     get_ticker_data(TICKER=TICKER)

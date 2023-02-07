@@ -19,9 +19,10 @@ Azure ML SDK v2
         Data pipeline updation based on schedule
         - [X] Batch
         - [X] Data validation, capture the SD [Not applicable in this use case]
-        - [ ] Data push to github
-        - [ ] Data upload to Azure
-        - [ ] Delete local file - will do later
+        - [X] Data push to github
+        - [X] Data upload to Azure
+        - [ ] Delete local file - not doing, keeping only one file
+        - [ ] Option to input ticker from cron job, if multiple tickers, there should be a for loop
 
     - [ ] train: 
         Model re-training and publishing of metrics

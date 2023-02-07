@@ -41,7 +41,7 @@ def get_ticker_data(TICKER:str):
 
     # except:
     #     with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-    #         print(f'downloaded=No', f)
+    #         print(f'downloaded=False', f)
     #     logging.error("Problem with downloading data from YFinance.")
 
 def get_dataset_tags(df):

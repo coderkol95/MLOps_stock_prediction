@@ -1,4 +1,3 @@
-$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 tags:
     modeltype:pytorch
 code: src

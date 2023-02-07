@@ -45,9 +45,6 @@ jobs:
       run: |
         az extension add -n ml
         az ml data create -f jobs/data_upload.yml
-      if: steps.data.outputs.downloaded == "True"
-
-
 
 # # #
 # 1. Edit yaml file via python file to write out path and tags

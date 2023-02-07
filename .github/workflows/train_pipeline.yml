@@ -28,25 +28,26 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: download ticker data and update yml file
-      run: python download_ticker_data.py
+      run: python data_download.py
       id: data
       working-directory: jobs
-    - name: push new file to github
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A
-        git commit -m " $ {{ steps.data.outputs.filename }} updated." || exit 0
-        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: push new file to github
+    #   run: |
+    #     git config --local user.email "action@github.com"
+    #     git config --local user.name "GitHub Action"
+    #     git add -A
+    #     git commit -m " $ {{ steps.data.outputs.filename }} updated." || exit 0
+    #     git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: upload to azure
       run: |
         az extension add -n ml
-        az ml data create -f jobs/data.yml
+        az ml data create -f jobs/data_upload.yml
+      if: ${{ steps.data.outputs.downloaded}} == "Yes"
+
 
 # # #
-# 1. Ensure Azure login job is working
-# 2. Edit yaml file via python file to write out path and tags
+# 1. Edit yaml file via python file to write out path and tags
 # 3. if clause to not run the azure upload step if file is not downloaded
 # # #

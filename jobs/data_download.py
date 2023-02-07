@@ -15,37 +15,37 @@ def get_ticker_data(TICKER:str):
 
     """
 
-    # try:
-    start = str(datetime.today().date()-timedelta(days=366))
-    end = str(datetime.today().date()-timedelta(days=1))
+    try:
+        start = str(datetime.today().date()-timedelta(days=366))
+        end = str(datetime.today().date()-timedelta(days=1))
 
-    tickerData=yf.download(TICKER,start=start, end=end, period='1d')
-    tickerData['Date']=[str(x)[:10] for x in tickerData.index]
+        tickerData=yf.download(TICKER,start=start, end=end, period='1d')
+        tickerData['Date']=[str(x)[:10] for x in tickerData.index]
 
-    if tickerData.shape[0]==0:
-        raise ValueError("No data found via YFinance.")
+        if tickerData.shape[0]==0:
+            raise ValueError("No data found via YFinance.")
 
-    logging.info(f"{os.getcwd()}")
-    logging.info(f"Length of ticker data: {tickerData.shape[0]}")
-    if tickerData.shape[0]!=0:
+        logging.info(f"{os.getcwd()}")
+        logging.info(f"Length of ticker data: {tickerData.shape[0]}")
+        if tickerData.shape[0]!=0:
 
-        tickerData = tickerData['Close']
+            tickerData = tickerData['Close']
 
-        logging.info(f"Length of ticker data: {len(tickerData.index)}")
+            logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
-        with open(os.environ['GITHUB_OUTPUT'],'w') as f:
-            print(f"filename={TICKER[:TICKER.index('.')]}", f)
+            with open(os.environ['GITHUB_OUTPUT'],'w') as f:
+                print(f"filename={TICKER[:TICKER.index('.')]}", f)
 
-        # Only persisting the latest in the repository
-        path = f'../data/{TICKER}.csv'
-        tickerData.to_csv(path,index=True)
-        
-        tags = get_dataset_tags(tickerData)
-        # save_to_data_upload(path, TICKER, tags)
-        # with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            # Only persisting the latest in the repository
+            path = f'../data/{TICKER}.csv'
+            tickerData.to_csv(path,index=True)
+            
+            tags = get_dataset_tags(tickerData)
+            save_to_data_upload(path, TICKER, tags)
+            # with open(os.environ['GITHUB_OUTPUT'],'a') as f:
         #     print(f"downloaded=True", f)
-    # except:
-    #     logging.error("Problem with downloading data from YFinance.")
+    except:
+        logging.error("Problem with downloading data from YFinance.")
 
 def get_dataset_tags(df):
 
@@ -59,24 +59,25 @@ def get_dataset_tags(df):
 
 def save_to_data_upload(path, ticker, tags):
 
-    # try:
-    name=ticker[:ticker.index('.')]
-    version=re.sub('-','',str(datetime.today().date()))
-    description=f"Stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval."
-    path=path
-    tags=tags
+    try:
+        name=ticker[:ticker.index('.')]
+        # version=re.sub('-','',str(datetime.today().date()))
+        version=100
+        description=f"Stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval."
+        path=path
+        tags=tags
 
-    # Write to yaml file
+        # Write to yaml file
 
-    with open("../jobs/data_upload.yml","w") as f:
+        with open("../jobs/data_upload.yml","w") as f:
 
-        f.write(
-        f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-        \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: '{path}'\ntags: {tags}\nversion: {version}""")
+            f.write(
+            f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+            \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: '{path}'\ntags: {tags}\nversion: {version}""")
 
-    logging.info(f"Uploaded stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval.")
-    # except:
-    #     logging.error("Problem with persisting data to Azure ML datastore.")
+        logging.info(f"Uploaded stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval.")
+    except:
+        logging.error("Problem with persisting data to Azure ML datastore.")
 
 if __name__=="__main__":
 

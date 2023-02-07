@@ -31,6 +31,7 @@ jobs:
       run: python data_download.py
       id: data
       working-directory: jobs
+    - run: echo "${{ steps.data.outputs.filename }}"  
     - name: push new file to github
       run: |
         git config --local user.email "action@github.com"
@@ -44,7 +45,7 @@ jobs:
       run: |
         az extension add -n ml
         az ml data create -f jobs/data_upload.yml
-      if: steps.data.outputs.downloaded == True
+      if: steps.data.outputs.downloaded == "True"
 
 
 

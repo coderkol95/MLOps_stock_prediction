@@ -68,7 +68,7 @@ def save_to_data_upload(path, ticker, tags):
 
             f.write(
             f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-            \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: f'{path}'\ntags: {tags}\nversion: {version}""")
+            \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: '{path}'\ntags: {tags}\nversion: {version}""")
  
         logging.info(f"Uploaded stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval.")
     except:

@@ -1,48 +1,25 @@
-name: data upload to azure
+name: training job
 on:
-  schedule:
-    - cron: '0 0 * 12 1'
+  push:
+    branches:
+      - "training-automation"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout repository
-      uses: actions/checkout@v2 # Renamed branch to main before this execution
-
-    - name: setup python 3.9
-      uses: actions/setup-python@v4
-      with: 
-        python-version: "3.9"
-    - name: install python packages
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-  azure-setup:
-    runs-on: ubuntu-latest
-    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
     - name: azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        creds: ${{secrets.AZ_CREDS}}
     - name: setup
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-  dataupload:
-    runs-on: ubuntu-latest
-    steps:
-    - name: download the data
-      run: python jobs/data.py
-    - name: upload to azure
-      run: az ml data create -f jobs/data.yml
-
-# # #
-# 1. Ensure Azure login job is working
-# 2. Ensure downloaded file is saved
-# 3. Check if the file is saved in the yaml file using if clause
-# 4. Write out file params in a json or something
-# 5. If the file is saved, upload the file to Azure after reading the file params
-# 6. 
-# 7. 
-# 8.
-# # #
+    - name: create-compute
+      run: bash create_compute.yml
+      working-directory: cli
+    - name: train-job
+      run: bash train.yml
+      working-directory: jobs

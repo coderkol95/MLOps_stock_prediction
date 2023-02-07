@@ -1,0 +1,1 @@
+az ml compute create -n computer456 --type amlcompute --min-instances 1 --max-instances 2

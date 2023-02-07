@@ -42,10 +42,11 @@ def get_ticker_data(TICKER:str):
         
         tags = get_dataset_tags(tickerData)
         save_to_data_upload(path, TICKER, tags)
-
+        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            print(f'downloaded={True}', f)
     # except:
     #     with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-    #         print(f'downloaded={false}', f)
+    #         print(f'downloaded={False}', f)
     #     logging.error("Problem with downloading data from YFinance.")
 
 def get_dataset_tags(df):

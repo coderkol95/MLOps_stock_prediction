@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
             
 type: uri_file
-name: 'CIPLA'
-description: Stock data for CIPLA.NS during 2022-02-07:2023-02-03 in 1d interval.
-path: '../data/CIPLA.NS.csv'
-tags: {'Length': 248, 'Start': '2022-02-07', 'End': '2023-02-03', 'Median': 1028.9749755859375, 'SD': 70.51560463434613}
+name: 'TCS'
+description: Stock data for TCS.NS during 2022-02-07:2023-02-03 in 1d interval.
+path: '../data/TCS.NS.csv'
+tags: {'Length': 248, 'Start': '2022-02-07', 'End': '2023-02-03', 'Median': 3330.4000244140625, 'SD': 205.46314020254422}
 version: 20230207

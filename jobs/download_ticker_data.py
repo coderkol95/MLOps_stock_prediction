@@ -21,10 +21,10 @@ def get_ticker_data(TICKER:str):
         # tickerData = tickerData['Close']
         # logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
-        data = str({'filename':TICKER,'Date':[1,2,3],'Close':[10,20,30]})
+        data = {'filename':TICKER,'Date':[1,2,3],'Close':[10,20,30]}
 
         with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
-            print(data, file=f)
+            print(json.dumps(data), file=f)
 
         # print(tickerData['Close'])
     except:

@@ -7,34 +7,32 @@ import pandas as pd
 
 def get_ticker_data(TICKER:str):
 
-    with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-        print('filename=TICKER', f)
+    try:
+        start = str(datetime.today().date()-timedelta(days=366))
+        end = str(datetime.today().date()-timedelta(days=1))
+
+        tickerData=yf.download(TICKER,start=start, end=end, period='1d')
+        tickerData['Date']=[str(x)[:10] for x in tickerData.index]
+
+        if tickerData.shape[0]==0:
+            raise ValueError("No data found via YFinance.")
+
+        tickerData['Ticker']=TICKER
+        tickerData = pd.DataFrame(tickerData['Close'])
+        logging.info(f"Length of ticker data: {len(tickerData.index)}")
+
+        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            print(f'filename={TICKER}', f)
+
+        path = f'../data/{TICKER}_{datetime.now().date()}.csv'
+
+        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            print(f'path={path}', f)
         
-    data = pd.DataFrame({'Date':[1,2,3],'Close':[10,20,30]})
+        tickerData.to_csv(path,index=False)
 
-    data.to_csv('data_writeout.csv',index=False)
-
-    # try:
-        # start = str(datetime.today().date()-timedelta(days=366))
-        # end = str(datetime.today().date()-timedelta(days=1))
-
-        # tickerData=yf.download(TICKER,start=start, end=end, period='1d')
-        # tickerData['Date']=[str(x)[:10] for x in tickerData.index]
-
-        # if tickerData.shape[0]==0:
-        #     raise ValueError("No data found via YFinance.")
-
-        # tickerData['Ticker']=TICKER
-        # tickerData = tickerData['Close']
-        # logging.info(f"Length of ticker data: {len(tickerData.index)}")
-
-
-        # with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
-            # json.dump(data, f)
-
-        # print(tickerData['Close'])
-    # except:
-    #     logging.error("Problem with downloading data from YFinance.")
+    except:
+        logging.error("Problem with downloading data from YFinance.")
 
 # def upload_data(ml_client, path, TICKER):
 

@@ -1,5 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 tags:
-    modeltype:pytorch
+    modeltype: pytorch
 code: src
 command: >-
   python train.py 

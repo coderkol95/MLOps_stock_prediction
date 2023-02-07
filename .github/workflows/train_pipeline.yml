@@ -40,11 +40,13 @@ jobs:
     #     columns: Date, Close
     #     "Date": ${{ fromJson(steps.data.outputs).Date }}
     #     "Close": ${{ fromJson(steps.data.outputs).Close }}
-    - run: git config --local user.email "action@github.com"
-    - run: git config --local user.name "GitHub Action"
-    - run: git add data
-    - run: git commit -m "data/{{steps.data.outputs.file_name}}.csv updated"
-    - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        timestamp = $(date -u)
+        git commit -m "Latest data downloaded at ${timestamp}"
+        "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # - name: upload to azure

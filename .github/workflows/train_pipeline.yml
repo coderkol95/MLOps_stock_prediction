@@ -18,7 +18,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create-compute
-      run: bash create_compute.yml
+      run: az ml compute create -f create-instance.yml
       working-directory: utils
     - name: train-job
       run: bash train.yml

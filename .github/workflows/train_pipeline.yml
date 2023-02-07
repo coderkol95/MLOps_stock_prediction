@@ -28,7 +28,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: download ticker data and update yml file
-      run: python data_download.py --TICKER CIPLA.NS
+      run: python data_download.py --TICKER TCS.NS
       id: data
       working-directory: jobs
     - run: echo "${{ steps.data.outputs.filename }}"  
@@ -37,7 +37,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add -A
-        git commit -m " ${{ steps.data.outputs.filename }} updated." || exit 0
+        git commit -m "Latest ticker data downloaded and YAML file updated" || exit 0
         git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,6 +47,5 @@ jobs:
         az ml data create -f jobs/data_upload.yml
 
 # # #
-# 1. Edit yaml file via python file to write out path and tags
-# 3. if clause to not run the azure upload step if file is not downloaded
+# Remaining: if clause to not run the azure upload step if file is not downloaded
 # # #

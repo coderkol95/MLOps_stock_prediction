@@ -21,8 +21,8 @@ Azure ML SDK v2
         - [X] Data validation, capture the SD [Not applicable in this use case]
         - [X] Data push to github
         - [X] Data upload to Azure
-        - [ ] Delete local file - not doing, keeping only one file
-        - [ ] Option to input ticker from cron job, if multiple tickers, there should be a for loop
+        - [X] Delete local file - not doing, keeping only one file
+        - [X] Option to input ticker during cron job
 
     - [ ] train: 
         Model re-training and publishing of metrics

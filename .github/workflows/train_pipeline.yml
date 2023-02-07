@@ -18,10 +18,11 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create-compute
-      working-directory: ../cli
-      run: bash create_compute.yml
+      run: bash create_compute.sh
+      working-directory: cli
     - name: train-job
       run: bash train.yml
+      working-directory: jobs
     # - name: delete-compute
-    #   run: bash delete_compute.yml
+    #   run: bash delete_compute.sh
     #   working-directory: cli

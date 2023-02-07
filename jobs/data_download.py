@@ -33,7 +33,8 @@ def get_ticker_data(TICKER:str):
         with open(os.environ['GITHUB_OUTPUT'],'a') as f:
             print(f'downloaded=Yes', f)
 
-        path = f'../data/{TICKER}_{datetime.now().date()}.csv'
+        # Only persisting the latest in the repository
+        path = f'../data/{TICKER}.csv'
         
         tickerData.to_csv(path,index=True)
         tags = get_dataset_tags(tickerData)

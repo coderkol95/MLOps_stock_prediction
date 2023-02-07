@@ -31,9 +31,6 @@ def get_ticker_data(TICKER:str):
         logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
         with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-            print(f'downloaded=Yes', f)
-
-        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
             print(f"filename={tickerData[:tickerData.index('.')]}", f)
 
         # Only persisting the latest in the repository
@@ -44,6 +41,8 @@ def get_ticker_data(TICKER:str):
         save_to_data_upload(path, TICKER, tags)
 
     except:
+        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            print(f'downloaded=No', f)
         logging.error("Problem with downloading data from YFinance.")
 
 def get_dataset_tags(df):

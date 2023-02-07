@@ -41,10 +41,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: upload to azure
-      if: steps.data.outputs.downloaded != False
       run: |
         az extension add -n ml
         az ml data create -f jobs/data_upload.yml
+      if: steps.data.outputs.downloaded != False
+
 
 
 # # #

@@ -20,7 +20,11 @@ jobs:
     - name: create-compute
       run: |
         az extension add -n ml
-        az ml compute create -n computer456 --type amlcompute --min-instances 1 --max-instances 2
+        az ml compute create -n computer456 
+        --size Standard_DS11_v2
+        --type amlcompute 
+        --min-instances 1 
+        --max-instances 2
     - name: train-job
       run: bash train.yml
       working-directory: jobs

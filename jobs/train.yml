@@ -1,7 +1,7 @@
 @ -1,18 +0,0 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
-command: >--
+command: |
   python train.py 
   --data ${{inputs.data}} 
   --test_train_ratio ${{inputs.test_train_ratio}} 

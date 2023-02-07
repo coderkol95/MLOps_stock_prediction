@@ -20,7 +20,9 @@ jobs:
     - name: create-compute
       run: |
         az extension add -n ml
-        az ml compute create -n computer456 
+        az ml compute create
+        --name computer456
+        --type computecluster
         --size Standard_DS11_v2
         --type amlcompute 
         --min-instances 1 

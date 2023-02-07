@@ -3,9 +3,9 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: src
 command: |
   python train.py 
-  --data ${{inputs.data}} 
-  --test_train_ratio ${{inputs.test_train_ratio}} 
-  --local_model_name ${{inputs.local_model_name}}"
+  --data ${{inputs.data}}
+  --test_train_ratio ${{inputs.test_train_ratio}}
+  --local_model_name ${{inputs.local_model_name}}
 inputs:
     data:
       type: uri_file

@@ -25,6 +25,8 @@ def get_ticker_data(TICKER:str):
     if tickerData.shape[0]==0:
         raise ValueError("No data found via YFinance.")
 
+    logging.info(f"{os.getcwd()}")
+    logging.info(f"Length of ticker data: {tickerData.shape[0]}")
     if tickerData.shape[0]!=0:
 
         tickerData = tickerData['Close']

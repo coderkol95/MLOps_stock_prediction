@@ -27,19 +27,26 @@ jobs:
     #   run: bash setup.sh
     #   working-directory: cli
     #   continue-on-error: true
-    - name: download the data
-      run: python download_ticker_data.py
-      id: data
-      working-directory: jobs
-    - name: printer
-      run: echo ${{ steps.data.outputs.filename }}, ${{ steps.data.outputs.Date }}, ${{ steps.data.outputs.Close }}
-    - name: write out csv
-      uses: gr2m/write-csv-file-action@v1.x
+    - uses: gr2m/org-stats-action@v1.x
+      id: stats
       with:
-        path: data/${{ fromJson(steps.data.outputs).filename }}.csv
-        columns: Date, Close
-        "Date": ${{ fromJson(steps.data.outputs).Date }}
-        "Close": ${{ fromJson(steps.data.outputs).Close }}
+        org: octokit
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: echo "${{ fromJson(steps.stats.outputs.data).openIssues }}"
+    # - name: download the data
+    #   run: python download_ticker_data.py
+    #   id: data
+    #   working-directory: jobs
+    # - name: printer
+    #   run: echo ${{ steps.data.outputs.filename }}, ${{ steps.data.outputs.Date }}, ${{ steps.data.outputs.Close }}
+    # - name: write out csv
+    #   uses: gr2m/write-csv-file-action@v1.x
+    #   with:
+    #     path: data/${{ fromJson(steps.data.outputs).filename }}.csv
+    #     columns: Date, Close
+    #     "Date": ${{ fromJson(steps.data.outputs).Date }}
+    #     "Close": ${{ fromJson(steps.data.outputs).Close }}
     - run: git config --local user.email "action@github.com"
     - run: git config --local user.name "GitHub Action"
     - run: git add data

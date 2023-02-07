@@ -44,7 +44,7 @@ jobs:
       run: |
         az extension add -n ml
         az ml data create -f jobs/data_upload.yml
-      if: steps.data.outputs.downloaded != False
+      if: steps.data.outputs.downloaded != "False"
 
 
 

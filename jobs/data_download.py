@@ -60,24 +60,24 @@ def get_dataset_tags(df):
 
 def save_to_data_upload(path, ticker, tags):
 
-    try:
-        name=ticker[:ticker.index('.')]
-        version=re.sub('-','',str(datetime.today().date()))
-        description=f"Stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval."
-        path=path
-        tags=tags
+    # try:
+    name=ticker[:ticker.index('.')]
+    version=re.sub('-','',str(datetime.today().date()))
+    description=f"Stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval."
+    path=path
+    tags=tags
 
-        # Write to yaml file
+    # Write to yaml file
 
-        with open("./jobs/data_upload.yml","w") as f:
+    with open("../jobs/data_upload.yml","w") as f:
 
-            f.write(
-            f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
-            \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: '{path}'\ntags: {tags}\nversion: {version}""")
- 
-        logging.info(f"Uploaded stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval.")
-    except:
-        logging.error("Problem with persisting data to Azure ML datastore.")
+        f.write(
+        f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+        \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: '{path}'\ntags: {tags}\nversion: {version}""")
+
+    logging.info(f"Uploaded stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval.")
+    # except:
+    #     logging.error("Problem with persisting data to Azure ML datastore.")
 
 if __name__=="__main__":
 

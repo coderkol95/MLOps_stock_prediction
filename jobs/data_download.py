@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import pandas as pd
 import re
+import argparse
 
 def get_ticker_data(TICKER:str):
 
@@ -49,6 +50,11 @@ def get_ticker_data(TICKER:str):
 
 def get_dataset_tags(df):
 
+    """
+    Return dataset stats for storing against Azure dataset.
+
+    """
+
     tags={
             'Length':len(df),
             'Start':str(df.index[0].date()),
@@ -59,10 +65,14 @@ def get_dataset_tags(df):
 
 def save_to_data_upload(path, ticker, tags):
 
+    """
+    Write out the specifications to the Azure YAML file for uploading to Azure datastore.
+    
+    """
+
     try:
         name=ticker[:ticker.index('.')]
-        # version=re.sub('-','',str(datetime.today().date()))
-        version=100
+        version=re.sub('-','',str(datetime.today().date()))
         description=f"Stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval."
         path=path
         tags=tags
@@ -81,5 +91,9 @@ def save_to_data_upload(path, ticker, tags):
 
 if __name__=="__main__":
 
-    TICKER="LT.NS"
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('TICKER',type=str, help="TICKER from YFinance that you want to download.")
+    args = parser.parse_args()
+    TICKER=args.TICKER
     get_ticker_data(TICKER=TICKER)

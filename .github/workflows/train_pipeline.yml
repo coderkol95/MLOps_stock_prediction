@@ -28,7 +28,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: download ticker data and update yml file
-      run: python data_download.py
+      run: python data_download.py --TICKER CIPLA.NS
       id: data
       working-directory: jobs
     - run: echo "${{ steps.data.outputs.filename }}"  

@@ -33,7 +33,7 @@ def get_ticker_data(TICKER:str):
         print(f"filename={TICKER[:TICKER.index('.')]}", f)
 
     # Only persisting the latest in the repository
-    path = f'../data/{TICKER}.csv'
+    path = f'./data/{TICKER}.csv'
     
     tickerData.to_csv(path,index=True)
     tags = get_dataset_tags(tickerData)
@@ -65,7 +65,7 @@ def save_to_data_upload(path, ticker, tags):
 
         # Write to yaml file
 
-        with open("../jobs/data_upload.yml","w") as f:
+        with open("./jobs/data_upload.yml","w") as f:
 
             f.write(
             f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json

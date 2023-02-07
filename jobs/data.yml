@@ -3,4 +3,4 @@ $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
 type: uri_file
 name: 'LTI_test'
 description: desc
-path: '../data/LTI.NS.csv'
+path: '../data/LT.NS_2023-02-07.csv'

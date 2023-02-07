@@ -24,7 +24,7 @@ def get_ticker_data(TICKER:str):
         data = {"filename":TICKER,"Date":[1,2,3],"Close":[10,20,30]}
 
         with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
-            f.write(json.dumps(data))
+            f.write(data)
 
         # print(tickerData['Close'])
     except:

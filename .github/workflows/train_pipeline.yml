@@ -18,11 +18,11 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create-compute
-      run: bash create_compute.sh
-      working-directory: cli
+      run: |
+        az extension add -n ml
+        az ml compute create -n computer456 --type amlcompute --min-instances 1 --max-instances 2
     - name: train-job
       run: bash train.yml
       working-directory: jobs
     # - name: delete-compute
-    #   run: bash delete_compute.sh
-    #   working-directory: cli
+    #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace

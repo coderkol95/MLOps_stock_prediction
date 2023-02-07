@@ -18,15 +18,8 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create-compute
-      run: |
-        az extension add -n ml
-        az ml compute create
-        --name computer456
-        --type computecluster
-        --size Standard_DS11_v2
-        --type amlcompute 
-        --min-instances 1 
-        --max-instances 2
+      run: bash create_compute.yml
+      working-directory: utils
     - name: train-job
       run: bash train.yml
       working-directory: jobs

@@ -1,0 +1,4 @@
+$schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json 
+name: computer456
+type: computeinstance
+size: STANDARD_DS11_v2

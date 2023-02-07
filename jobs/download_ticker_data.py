@@ -30,7 +30,7 @@ def get_ticker_data(TICKER:str):
         with open(os.environ['GITHUB_OUTPUT'],'a') as f:
             print(f'path={path}', f)
         
-        tickerData.to_csv(path,index=False)
+        tickerData.to_csv(path,index=True)
 
     except:
         logging.error("Problem with downloading data from YFinance.")

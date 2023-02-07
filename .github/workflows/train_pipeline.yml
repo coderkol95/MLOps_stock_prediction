@@ -43,7 +43,7 @@ jobs:
     - run: git config --local user.email "action@github.com"
     - run: git config --local user.name "GitHub Action"
     - run: git add -A
-    - run: git commit -m "Date $ {{steps.data.outputs.filename}} updated."
+    - run: git commit -m "File updated."
     - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

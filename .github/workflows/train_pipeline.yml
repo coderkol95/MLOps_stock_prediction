@@ -33,7 +33,6 @@ jobs:
       working-directory: jobs
     - name: push new file to github
       run: |
-        echo "{{ steps.data.outputs.path }}"
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add -A

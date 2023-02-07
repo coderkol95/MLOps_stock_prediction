@@ -34,7 +34,7 @@ def get_ticker_data(TICKER:str):
             print(f'downloaded=Yes', f)
 
         with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-            print(f'filename={tickerData[:tickerData.index('.')]}', f)
+            print(f"filename={tickerData[:tickerData.index('.')]}", f)
 
         # Only persisting the latest in the repository
         path = f'../data/{TICKER}.csv'

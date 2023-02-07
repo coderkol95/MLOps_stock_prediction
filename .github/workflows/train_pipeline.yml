@@ -27,16 +27,18 @@ jobs:
     #   run: bash setup.sh
     #   working-directory: cli
     #   continue-on-error: true
-    - name: download the data
+    - name: download ticker data
       run: python download_ticker_data.py
       id: data
       working-directory: jobs
-    - run: echo "{{ steps.data.outputs.path }}"
-    - run: git config --local user.email "action@github.com"
-    - run: git config --local user.name "GitHub Action"
-    - run: git add -A
-    - run: git commit -m " $ {{ steps.data.outputs.filename }} updated." || exit 0
-    - run: "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
+    - name: push new file to github
+      run: |
+        echo "{{ steps.data.outputs.path }}"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git commit -m " $ {{ steps.data.outputs.filename }} updated." || exit 0
+        "git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # - name: upload to azure

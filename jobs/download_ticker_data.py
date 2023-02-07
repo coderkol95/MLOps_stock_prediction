@@ -18,7 +18,8 @@ def get_ticker_data(TICKER:str):
             raise ValueError("No data found via YFinance.")
 
         tickerData['Ticker']=TICKER
-        tickerData = pd.DataFrame(tickerData['Close'])
+        tickerData = tickerData['Close']
+
         logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
         with open(os.environ['GITHUB_OUTPUT'],'a') as f:

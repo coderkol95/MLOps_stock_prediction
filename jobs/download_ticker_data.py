@@ -20,11 +20,12 @@ def get_ticker_data(TICKER:str):
         # tickerData['Ticker']=TICKER
         # tickerData = tickerData['Close']
         # logging.info(f"Length of ticker data: {len(tickerData.index)}")
-        with open(['GITHUB_OUTPUT'],'w') as f:
-            print('filename=TICKER')
+        with open(['GITHUB_OUTPUT'],'a') as f:
+            print('filename=TICKER', f)
+        
         data = pd.DataFrame({'Date':[1,2,3],'Close':[10,20,30]})
-        with open('data_writeout.csv','w+') as f:
-            f.write(data.to_csv(index=False))
+
+        data.to_csv('data_writeout.csv',index=False)
 
         # with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
             # json.dump(data, f)

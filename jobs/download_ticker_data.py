@@ -4,6 +4,7 @@ import yfinance as yf
 import pandas as pd
 import os
 import json
+import pandas as pd
 
 def get_ticker_data(TICKER:str):
 

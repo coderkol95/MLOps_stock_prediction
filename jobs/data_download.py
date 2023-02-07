@@ -15,35 +15,34 @@ def get_ticker_data(TICKER:str):
 
     """
 
-    try:
-        start = str(datetime.today().date()-timedelta(days=366))
-        end = str(datetime.today().date()-timedelta(days=1))
+    # try:
+    start = str(datetime.today().date()-timedelta(days=366))
+    end = str(datetime.today().date()-timedelta(days=1))
 
-        tickerData=yf.download(TICKER,start=start, end=end, period='1d')
-        tickerData['Date']=[str(x)[:10] for x in tickerData.index]
+    tickerData=yf.download(TICKER,start=start, end=end, period='1d')
+    tickerData['Date']=[str(x)[:10] for x in tickerData.index]
 
-        if tickerData.shape[0]==0:
-            raise ValueError("No data found via YFinance.")
+    if tickerData.shape[0]==0:
+        raise ValueError("No data found via YFinance.")
 
-        tickerData['Ticker']=TICKER
-        tickerData = tickerData['Close']
+    tickerData = tickerData['Close']
 
-        logging.info(f"Length of ticker data: {len(tickerData.index)}")
+    logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
-        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-            print(f"filename={TICKER[:TICKER.index('.')]}", f)
+    with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+        print(f"filename={TICKER[:TICKER.index('.')]}", f)
 
-        # Only persisting the latest in the repository
-        path = f'../data/{TICKER}.csv'
-        
-        tickerData.to_csv(path,index=True)
-        tags = get_dataset_tags(tickerData)
-        save_to_data_upload(path, TICKER, tags)
+    # Only persisting the latest in the repository
+    path = f'../data/{TICKER}.csv'
+    
+    tickerData.to_csv(path,index=True)
+    tags = get_dataset_tags(tickerData)
+    save_to_data_upload(path, TICKER, tags)
 
-    except:
-        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-            print(f'downloaded=No', f)
-        logging.error("Problem with downloading data from YFinance.")
+    # except:
+    #     with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+    #         print(f'downloaded=No', f)
+    #     logging.error("Problem with downloading data from YFinance.")
 
 def get_dataset_tags(df):
 
@@ -66,7 +65,7 @@ def save_to_data_upload(path, ticker, tags):
 
         # Write to yaml file
 
-        with open("../jobs/data_upload.yml","w+") as f:
+        with open("../jobs/data_upload.yml","w") as f:
 
             f.write(
             f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json

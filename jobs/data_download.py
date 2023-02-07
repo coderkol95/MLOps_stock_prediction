@@ -25,19 +25,21 @@ def get_ticker_data(TICKER:str):
     if tickerData.shape[0]==0:
         raise ValueError("No data found via YFinance.")
 
-    tickerData = tickerData['Close']
+    if tickerData.shape[0]!=0:
 
-    logging.info(f"Length of ticker data: {len(tickerData.index)}")
+        tickerData = tickerData['Close']
 
-    with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-        print(f"filename={TICKER[:TICKER.index('.')]}", f)
+        logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
-    # Only persisting the latest in the repository
-    path = f'./data/{TICKER}.csv'
-    
-    tickerData.to_csv(path,index=True)
-    tags = get_dataset_tags(tickerData)
-    save_to_data_upload(path, TICKER, tags)
+        with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+            print(f"filename={TICKER[:TICKER.index('.')]}", f)
+
+        # Only persisting the latest in the repository
+        path = f'../data/{TICKER}.csv'
+        tickerData.to_csv(path,index=True)
+        
+        tags = get_dataset_tags(tickerData)
+        save_to_data_upload(path, TICKER, tags)
 
     # except:
     #     with open(os.environ['GITHUB_OUTPUT'],'a') as f:

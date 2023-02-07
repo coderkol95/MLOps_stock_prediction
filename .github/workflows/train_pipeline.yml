@@ -1,7 +1,10 @@
 name: training job
 on:
+  push:
+    branches:
+      - "data-upload-automation"
   schedule:
-      - '*/2 * * * *'
+    - cron: '*/2 * * * *'
 jobs:
   build:
     runs-on: ubuntu-latest

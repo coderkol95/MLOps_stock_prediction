@@ -35,10 +35,13 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: install azure-ml-cli
-      run: az extension add -n azure-cli-ml
+    - run: az extension add -n azure-cli-ml
     - name: register-step
-      run: az ml model register --name GA_model --asset-path azureml://jobs/{azureml-GA-run4}/outputs/artifacts/paths/outputs/
+      run: az ml model create 
+        -n GA_model
+        -v 1
+        -p runs:/$run_id/outputs/
+        --type custom_model
 
     ###
 # 1. Logging metrics during training
@@ -46,4 +49,5 @@ jobs:
 # 3. Scoring the new model
 # 4. Labelling it as challenger if it is good
 # 5. Shutdown compute after all operations
+# 6. Passing of variables: jobname, ticker
 ###

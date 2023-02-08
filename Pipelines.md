@@ -15,12 +15,12 @@ Azure ML SDK v2
         - [X] Data validation, capture the SD [Not applicable in this use case]
         - [ ] Delete local file - will do later
 
-    - [ ] train: 
+    - [X] train: 
         Model re-training and publishing of metrics
-        - [ ] Model version details - hyperparameters, model structure
-        - [ ] Publish performance metrics
+        - [ ] Model version details - hyperparameters, model structure - will do when improving model
+        - [X] Publish performance metrics
 
-    - [ ] register: 
+    - [X] register: 
         Model registration and comparison with previous models
         - [ ] Performance, fairness, bias, equity and other responsible AI metrics to be measured
         - [ ] Model profiling

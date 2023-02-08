@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-name: azureml-GA-run24 # Needs to be same in model register step in train_pipeline.yml
+name: azureml-GA-run26 # Needs to be same in model register step in train_pipeline.yml
 tags:
     modeltype: pytorch
 code: ../jobs

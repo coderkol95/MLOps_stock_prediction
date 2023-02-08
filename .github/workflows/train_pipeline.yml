@@ -1,4 +1,4 @@
-name: training job
+name: training and registering model
 on:
   push:
     branches:
@@ -23,10 +23,6 @@ jobs:
     - name: train-job
       working-directory: jobs
       run: az ml job create --file train.yml
-    - name: get MAPE
-      run: |
-        mape=$(az ml job show --name azureml-GA-run25 --query)
-        echo $mape
     
   register-job:
     needs: [train-job]
@@ -45,8 +41,8 @@ jobs:
     - name: register-model
       run: az ml model create
         --name GA_model 
-        --version 3
-        --path azureml://jobs/azureml-GA-run22/outputs/artifacts/paths/outputs/
+        --version 4
+        --path azureml://jobs/azureml-GA-run26/outputs/artifacts/paths/outputs/
         --type custom_model
 
   delete-compute:
@@ -65,7 +61,6 @@ jobs:
       continue-on-error: true
     - name: delete-step
       run: az ml compute delete --name computer456
-
 
 ###
 # 1. Test MAPE to be stored

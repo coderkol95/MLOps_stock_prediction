@@ -21,6 +21,8 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: create-endpoint
+      run: az ml online-endpoint create --name GA-deployment
     - name: deployment-step
       run: az ml online-deployment create -f deploy.yml
       working-directory: jobs

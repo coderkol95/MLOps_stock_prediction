@@ -17,19 +17,19 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create-compute
-      run: az ml compute create -f create_instance.yml || exit 0
-      working-directory: utils
+    # - name: create-compute
+    #   run: az ml compute create -f create_instance.yml || exit 0
+    #   working-directory: utils
     - name: train-job
       # run: az ml job create --file train.yml
-      run: run_id=$(az ml job create -f train.yml --query name -o tsv)
+      run: |
+        run_id=$(az ml job create -f train.yml --query name -o tsv)
+        echo run_id
+        echo "run_id={$run_id}" >> $GITHUB_OUTPUT
       working-directory: jobs
-    - run: echo run_id
-    - run: echo "print" 
+      id: train
     # - run: az ml job show -n azureml-GA-run10 -r RG -w AzureMLWorkspace $run_id
-    - run: echo "run_id={run_id}" >> $GITHUB_OUTPUT
-      id: printer
-    - run: echo "${{ steps.printer.outputs.run_id }}"
+    - run: echo "${{ steps.train.outputs.run_id }}"
 
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace

@@ -28,24 +28,15 @@ jobs:
       id: printer
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
-  register-model:
-    needs: [train-model]
-    runs-on: ubuntu-latest
-    steps:
-    - name: check out repo
-      uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - run: echo ${{ train-model.printer.outputs.run_id }}
+    - run: echo ${{ printer.outputs.run_id }}
     - run: az extension add -n azure-cli-ml
     - name: register-step
-      run: az ml model create 
+      run: az ml model create
         --name GA_model 
-        --experiment-name github-action-test
-        --run-id ${{ train-model.printer.outputs.run_id }}
-        --asset-path azureml://jobs/{azureml-GA-run7}/outputs/artifacts/paths/outputs/
+        --version 1
+        --path azureml://jobs/{azureml-GA-run8}/outputs/artifacts/paths/outputs/
+        # --experiment-name github-action-test
+        # --run-id ${{ train-model.printer.outputs.run_id }}
 
     ###
 # 1. Logging metrics during training

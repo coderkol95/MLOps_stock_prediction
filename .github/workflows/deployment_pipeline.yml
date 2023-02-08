@@ -1,8 +1,8 @@
 name: model deployment
-# on:
-#   push:
-#     branches:
-#       - "deployment-automation"
+on:
+  push:
+    branches:
+      - "deployment-automation"
 jobs:
   # compare-job:
   #  Compare if the model is good enough
@@ -21,4 +21,6 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: 
+    - name: deployment-step
+      run: az ml online-deployment create -f deploy.yml
+      working-directory: jobs

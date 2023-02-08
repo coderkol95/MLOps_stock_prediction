@@ -17,14 +17,16 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    - name: create-compute
-      run: az ml compute create -f create_instance.yml || exit 0
-      working-directory: utils
+    # - name: create-compute
+    #   run: az ml compute create -f create_instance.yml || exit 0
+    #   working-directory: utils
     # - name: train-job
     #   working-directory: jobs
     #   run: az ml job create --file train.yml
     - name: get MAPE
-      run: mape = $(az ml job show --name azureml-GA-run23 --query metrics)
+      run: |
+        mape=$(az ml job show --name azureml-GA-run23 --query metrics)
+        echo $mape
     
   # register-job:
   #   needs: [train-job]

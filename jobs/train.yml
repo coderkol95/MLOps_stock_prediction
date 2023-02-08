@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-name: azureml-GA-run23 # Needs to be same in model register step in train_pipeline.yml
+name: azureml-GA-run24 # Needs to be same in model register step in train_pipeline.yml
 tags:
     modeltype: pytorch
 code: ../jobs
@@ -14,6 +14,8 @@ inputs:
     path: azureml:CIPLA@latest
   test_train_ratio: 0.25
   local_model_name: 'local_model'
+outputs:
+  mape:
 environment: azureml:stock-pricing:0.1
 compute: azureml:computer456
 display_name: stock-prediction

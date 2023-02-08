@@ -4,11 +4,11 @@ import pandas as pd
 import torch
 from sklearn.preprocessing import  MinMaxScaler
 from sklearn.model_selection import train_test_split
-import logging
 import pickle
 import numpy as np
 from sklearn.metrics import mean_absolute_percentage_error
 import mlflow
+mlflow.autolog()
 
 def series_to_tensors(series, lookaheadSize=5):
 
@@ -55,12 +55,10 @@ class lstm_model(torch.nn.Module):
         x = self.out(x)
         return x, hidden
 
-def train(trainset):
+def train(trainset, epochs):
 
     seq_model = lstm_model()
     optim = torch.optim.Adam(lr = 0.0001, params=seq_model.parameters())
-
-    epochs = 10
 
     for epoch in np.arange(epochs):
 
@@ -78,7 +76,7 @@ def train(trainset):
             optim.step()
             Loss += loss.item()
 
-        print(f"Epoch: {epoch}, loss: {Loss}")
+        mlflow.log_metric("Training loss", Loss, step=epoch)
     return seq_model
 
 def main():
@@ -96,7 +94,8 @@ def main():
 
     scaler, trainset, X_test, y_test = dataprep(args)
 
-    trainedModel = train(trainset)
+    epochs=10
+    trainedModel = train(trainset, epochs)
 
     trainedModel.eval()
 
@@ -104,7 +103,7 @@ def main():
 
     mape=mean_absolute_percentage_error(y_test, y_pred.detach().numpy())
     
-    mlflow.log_metric("MAPE",mape)
+    mlflow.log_metric("MAPE", mape)
 
     pickle.dump(scaler, open('./outputs/scaler.pkl','wb'))
     model_file = f"./outputs/{args.local_model_name}.pth"

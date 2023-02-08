@@ -31,7 +31,7 @@ def init():
         scaler = pickle.load(f)
 
     modelpath = os.path.join(
-    os.getenv("AZUREML_MODEL_DIR"), "outputs/modelstock_pred_2023-01-25.pth")    
+    os.getenv("AZUREML_MODEL_DIR"), "outputs/local_model.pth")    
     model = lstm_model()
     model.load_state_dict(torch.load(modelpath))
     model.eval()

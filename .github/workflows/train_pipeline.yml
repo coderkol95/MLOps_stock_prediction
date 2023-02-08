@@ -38,7 +38,7 @@ jobs:
     #   run: az ml model create
     #     --name GA_model 
     #     --version 1
-    #     --path azureml://jobs/{azureml-GA-run9}/outputs/artifacts/paths/outputs/
+    #     --path azureml://jobs/{azureml-GA-run13}/outputs/artifacts/paths/outputs/
     
         # --experiment-name github-action-test
         # --run-id ${{ train-model.printer.outputs.run_id }}

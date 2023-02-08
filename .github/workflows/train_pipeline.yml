@@ -23,5 +23,19 @@ jobs:
     - name: train-job
       run: az ml job create --file train.yml
       working-directory: jobs
+    - name: register-model
+      run: az ml model register
+      --name GA_model
+      --asset-path azureml://jobs/{azureml-GA-run}/outputs/artifacts/paths/outputs/
+
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
+
+
+    ###
+# 1. Logging metrics during training
+# 2. Registering the model
+# 3. Scoring the new model
+# 4. Labelling it as challenger if it is good
+# 5. Shutdown compute after all operations
+###

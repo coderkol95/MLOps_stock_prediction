@@ -26,7 +26,7 @@ def series_to_tensors(series, lookaheadSize=5):
 
 def dataprep(args):
 
-    stockData = pd.read_csv(args.data, index_col='Unnamed: 0')
+    stockData = pd.read_csv(args.data, index_col='Date')
     stock_train_df, stock_test_df = train_test_split(stockData, test_size=args.test_train_ratio)
 
     print(stock_train_df)
@@ -86,7 +86,7 @@ def main():
     # input and output arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, help="Path to input data")
-    parser.add_argument("--local_model_name", type=str, required=True, default=0.25)
+    parser.add_argument("--local_model_name", type=str, required=True, default='local_model')
     parser.add_argument("--test_train_ratio", type=float, required=False, default=0.25)
 
     args = parser.parse_args()

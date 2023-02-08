@@ -23,15 +23,22 @@ jobs:
     - name: train-job
       run: az ml job create --file train.yml
       working-directory: jobs
+    # - name: delete-compute
+    #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
   register-model:
     needs: [train-model]
     runs-on: ubuntu-latest
     steps:
-    - run: az ml model register --name GA_model --asset-path azureml://jobs/{azureml-GA-run3}/outputs/artifacts/paths/outputs/
-
-    # - name: delete-compute
-    #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
-
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: install azure-ml-cli
+      run: az extension add -n azure-cli-ml
+    - name: register-step
+      run: az ml model register --name GA_model --asset-path azureml://jobs/{azureml-GA-run4}/outputs/artifacts/paths/outputs/
 
     ###
 # 1. Logging metrics during training

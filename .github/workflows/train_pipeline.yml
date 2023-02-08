@@ -48,9 +48,9 @@ jobs:
     - run: az ml model create
         --name GA_model 
         --version 1
-        # Big problem: Ensuring the training job has completed
         --path azureml://jobs/azureml-GA-run18/outputs/artifacts/paths/outputs/
         --type custom_model
+        # Big problem: Ensuring the training job has completed
 
     ###
 # 1. Logging metrics during training

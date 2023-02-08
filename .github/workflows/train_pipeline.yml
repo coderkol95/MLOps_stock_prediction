@@ -21,25 +21,21 @@ jobs:
     #   run: az ml compute create -f create_instance.yml || exit 0
     #   working-directory: utils
     - name: train-job
-      # run: az ml job create --file train.yml
-      run: |
-        run_id=$(az ml job create -f train.yml --query name -o tsv)
-        echo run_id
-        echo "run_id={$run_id}" >> $GITHUB_OUTPUT
       working-directory: jobs
-      id: train
-    # - run: az ml job show -n azureml-GA-run10 -r RG -w AzureMLWorkspace $run_id
-    - run: echo "${{ steps.train.outputs.run_id }}"
-
+      run: az ml job create --file train.yml
+      # run: |
+      # Run ID is same as Job name
+      #   run_id=$(az ml job create -f train.yml --query name -o tsv)
+      #   echo $run_id
+      #   echo "run_id={$run_id}" >> $GITHUB_OUTPUT
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
     
-    # - name: register-step
-    #   run: az ml model create
-    #     --name GA_model 
-    #     --version 1
-    #     --path azureml://jobs/{azureml-GA-run13}/outputs/artifacts/paths/outputs/
-    
+    - name: register-step
+      run: az ml model create
+        --name GA_model 
+        --version 1
+        --path azureml://jobs/{azureml-GA-run14}/outputs/artifacts/paths/outputs/
         # --experiment-name github-action-test
         # --run-id ${{ train-model.printer.outputs.run_id }}
 

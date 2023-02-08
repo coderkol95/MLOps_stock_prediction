@@ -23,6 +23,9 @@ jobs:
     - name: train-job
       run: az ml job create --file train.yml
       working-directory: jobs
+    - run: az ml job show -n $run_id
+    - run: echo "run_id={$run_id}" >> $GITHUB_OUTPUT
+      id: printer
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
   register-model:
@@ -35,16 +38,14 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - run: |
-        az extension remove -n azure-cli-ml
-        az extension remove -n ml
-        az extension add -n ml -y
+    - run: echo ${{ train-model.printer.outputs.run_id }}
+    - run: az extension add -n azure-cli-ml
     - name: register-step
       run: az ml model create 
-        -n GA_model
-        -v 1
-        -p runs:/$run_id/outputs/
-        --type custom_model
+        --name GA_model 
+        --experiment-name github-action-test
+        --run-id ${{ train-model.printer.outputs.run_id }}
+        --asset-path azureml://jobs/{azureml-GA-run7}/outputs/artifacts/paths/outputs/
 
     ###
 # 1. Logging metrics during training

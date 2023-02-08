@@ -25,7 +25,7 @@ jobs:
     #   run: az ml job create --file train.yml
     - name: get MAPE
       run: |
-        mape=$(az ml job show --name azureml-GA-run23 --query metrics)
+        mape=$(az ml job show --name azureml-GA-run23 --query)
         echo $mape
     
   # register-job:

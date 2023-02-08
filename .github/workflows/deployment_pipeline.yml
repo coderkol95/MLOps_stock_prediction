@@ -22,7 +22,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create-endpoint
-      run: az ml online-endpoint create --name GA-deployment
+      run: az ml online-endpoint create --name GA2-deployment
     - name: deployment-step
-      run: az ml online-deployment create -f deploy.yml
+      run: az ml online-deployment create -f deploy.yml --debug
       working-directory: jobs

@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
-endpoint_name: GA-deployment
+endpoint_name: GA2-deployment
 model: azureml:GA_model:2
 code_configuration:
   code: ../jobs

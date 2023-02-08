@@ -17,19 +17,12 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
-    # - name: create-compute
-    #   run: az ml compute create -f create_instance.yml || exit 0
-    #   working-directory: utils
-    # - name: train-job
-    #   working-directory: jobs
-    #   run: az ml job create --file train.yml
-      # run: |
-      # Run ID is same as Job name
-      #   run_id=$(az ml job create -f train.yml --query name -o tsv)
-      #   echo $run_id
-      #   echo "run_id={$run_id}" >> $GITHUB_OUTPUT
-    # - name: delete-compute
-    #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
+    - name: create-compute
+      run: az ml compute create -f create_instance.yml || exit 0
+      working-directory: utils
+    - name: train-job
+      working-directory: jobs
+      run: az ml job create --file train.yml
     
   register-job:
     needs: [train-job]
@@ -45,14 +38,37 @@ jobs:
       run: bash setup.sh
       working-directory: cli
       continue-on-error: true
+    - name: training-job-status
+      run: |
+        az ml job show --name azureml-GA-run19 --query "{Name:name, Jobstatus:status}"
+        echo $Jobstatus
     - run: az ml model create
         --name GA_model 
         --version 1
         --path azureml://jobs/azureml-GA-run18/outputs/artifacts/paths/outputs/
         --type custom_model
-        # Big problem: Ensuring the training job has completed
 
-    ###
+        # Big problem: Ensuring the training job has completed
+  
+  # delete-compute:
+  #   needs: [train-job]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: check out repo
+  #     uses: actions/checkout@v2
+  #   - name: azure login
+  #     uses: azure/login@v1
+  #     with:
+  #       creds: ${{secrets.AZURE_CREDENTIALS}}
+  #   - name: setup
+  #     run: bash setup.sh
+  #     working-directory: cli
+  #     continue-on-error: true
+  #   - name: delete-step
+  #     run: az ml compute delete --name computer456
+
+
+###
 # 1. Logging metrics during training
 # 2. Registering the model
 # 3. Scoring the new model

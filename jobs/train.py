@@ -5,9 +5,9 @@ import torch
 from sklearn.preprocessing import  MinMaxScaler
 from sklearn.model_selection import train_test_split
 import logging
-import mlflow
 import pickle
 import numpy as np
+from sklearn.metrics import mean_absolute_percentage_error
 
 def series_to_tensors(series, lookaheadSize=5):
 
@@ -21,8 +21,8 @@ def series_to_tensors(series, lookaheadSize=5):
     y=y.reshape(-1,1)
 
     dataset = torch.utils.data.TensorDataset(torch.from_numpy(X), torch.from_numpy(y))
-
-    return dataset
+    
+    return dataset, torch.from_numpy(X), y
 
 def dataprep(args):
 
@@ -36,10 +36,10 @@ def dataprep(args):
     stock_train_df = scaler.transform(stock_train_df)
     stock_test_df = scaler.transform(stock_test_df)
 
-    train_tensors = series_to_tensors(stock_train_df)
-    test_tensors = series_to_tensors(stock_test_df)
+    train_tensors,_,_ = series_to_tensors(stock_train_df)
+    _,X_test,y_test = series_to_tensors(stock_test_df)
 
-    return scaler, train_tensors, test_tensors
+    return scaler, train_tensors, X_test, y_test
 
 class lstm_model(torch.nn.Module):
 
@@ -86,19 +86,23 @@ def main():
     # input and output arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, help="Path to input data")
-    parser.add_argument("--local_model_name", type=str, required=True, default='local_model')
-    parser.add_argument("--test_train_ratio", type=float, required=False, default=0.25)
+    parser.add_argument("--local_model_name", type=str, default='local_model')
+    parser.add_argument("--test_train_ratio", type=float, default=0.25)
 
     args = parser.parse_args()
     
     # Load Scaler object later and send it for scaling data
 
-    scaler, trainset, _ = dataprep(args)
+    scaler, trainset, X_test, y_test = dataprep(args)
 
     trainedModel = train(trainset)
 
-    print(os.getcwd())
+    trainedModel.eval()
 
+    y_pred,_=trainedModel(X_test.float())
+
+    mape=mean_absolute_percentage_error(y_test, y_pred.detach().numpy())
+    logging.info(f"MAPE={mape}")
     pickle.dump(scaler, open('./outputs/scaler.pkl','wb'))
     model_file = f"./outputs/{args.local_model_name}.pth"
     torch.save(trainedModel.state_dict(), model_file)

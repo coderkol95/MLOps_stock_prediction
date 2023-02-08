@@ -4,7 +4,7 @@ on:
     branches:
       - "training-automation"
 jobs:
-  build:
+  train-model:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
@@ -23,10 +23,11 @@ jobs:
     - name: train-job
       run: az ml job create --file train.yml
       working-directory: jobs
-    - name: register-model
-      run: az ml model register
-        --name GA_model
-        --asset-path azureml://jobs/{azureml-GA-run2}/outputs/artifacts/paths/outputs/
+  register-model:
+    needs: [train-model]
+    runs-on: ubuntu-latest
+    steps:
+    - run: az ml model register --name GA_model --asset-path azureml://jobs/{azureml-GA-run3}/outputs/artifacts/paths/outputs/
 
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace

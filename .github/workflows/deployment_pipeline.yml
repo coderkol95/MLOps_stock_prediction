@@ -1,0 +1,24 @@
+name: model deployment
+# on:
+#   push:
+#     branches:
+#       - "deployment-automation"
+jobs:
+  # compare-job:
+  #  Compare if the model is good enough
+  #  Profile the model
+  #  If it is good enough, proceed to next step 
+  deployment-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: 

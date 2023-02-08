@@ -4,25 +4,25 @@ on:
     branches:
       - "training-automation"
 jobs:
-  # train-job:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: check out repo
-  #     uses: actions/checkout@v2
-  #   - name: azure login
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{secrets.AZURE_CREDENTIALS}}
-  #   - name: setup
-  #     run: bash setup.sh
-  #     working-directory: cli
-  #     continue-on-error: true
-  #   - name: create-compute
-  #     run: az ml compute create -f create_instance.yml || exit 0
-  #     working-directory: utils
-  #   - name: train-job
-  #     working-directory: jobs
-  #     run: az ml job create --file train.yml
+  train-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: create-compute
+      run: az ml compute create -f create_instance.yml || exit 0
+      working-directory: utils
+    - name: train-job
+      working-directory: jobs
+      run: az ml job create --file train.yml
     
   # register-job:
   #   needs: [train-job]

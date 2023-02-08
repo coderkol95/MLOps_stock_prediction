@@ -25,8 +25,8 @@ jobs:
       working-directory: jobs
     - name: register-model
       run: az ml model register
-      --name GA_model
-      --asset-path azureml://jobs/{azureml-GA-run}/outputs/artifacts/paths/outputs/
+        --name GA_model
+        --asset-path azureml://jobs/{azureml-GA-run}/outputs/artifacts/paths/outputs/
 
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace

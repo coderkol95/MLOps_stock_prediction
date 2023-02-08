@@ -4,7 +4,7 @@ on:
     branches:
       - "training-automation"
 jobs:
-  train-model:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
@@ -35,7 +35,8 @@ jobs:
       run: az ml model create
         --name GA_model 
         --version 1
-        --path azureml://jobs/{azureml-GA-run14}/outputs/artifacts/paths/outputs/
+        --path azureml://jobs/{azureml-GA-run15}/outputs/artifacts/paths/outputs/
+        --type custom_model 
         # --experiment-name github-action-test
         # --run-id ${{ train-model.printer.outputs.run_id }}
 

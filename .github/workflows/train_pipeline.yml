@@ -4,7 +4,7 @@ on:
     branches:
       - "training-automation"
 jobs:
-  build:
+  train-job:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
@@ -31,16 +31,25 @@ jobs:
     # - name: delete-compute
     #   run: az ml compute delete --name computer456 --resource-group RG --workspace-name AzureMLWorkspace
     
-    - name: register-step
-      run: az ml model create
+  register-job:
+    needs: [train-job]
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - run: az ml model create
         --name GA_model 
         --version 1
-        --path azureml://jobs/azureml-GA-run17/outputs/artifacts/paths/outputs/*
+        --path azureml://jobs/azureml-GA-run18/outputs/artifacts/paths/outputs/*
         --type custom_model
-        # --resource-group RG
-        # --workspace-name AzureMLWorkspace
-        # --experiment-name github-action-test
-        # --run-id ${{ train-model.printer.outputs.run_id }}
 
     ###
 # 1. Logging metrics during training

@@ -8,6 +8,7 @@ import logging
 import pickle
 import numpy as np
 from sklearn.metrics import mean_absolute_percentage_error
+import mlflow
 
 def series_to_tensors(series, lookaheadSize=5):
 
@@ -102,7 +103,9 @@ def main():
     y_pred,_=trainedModel(X_test.float())
 
     mape=mean_absolute_percentage_error(y_test, y_pred.detach().numpy())
-    logging.info(f"MAPE={mape}")
+    
+    mlflow.log_metric("MAPE",mape)
+
     pickle.dump(scaler, open('./outputs/scaler.pkl','wb'))
     model_file = f"./outputs/{args.local_model_name}.pth"
     torch.save(trainedModel.state_dict(), model_file)

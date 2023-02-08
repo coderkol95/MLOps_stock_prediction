@@ -40,12 +40,12 @@ jobs:
       continue-on-error: true
     - name: training-job-status
       run: |
-        Jobstatus=az ml job show --name azureml-GA-run21 --query status
+        Jobstatus=$(az ml job show --name azureml-GA-run22 --query status)
         echo $Jobstatus
     - run: az ml model create
         --name GA_model 
         --version 2
-        --path azureml://jobs/azureml-GA-run21/outputs/artifacts/paths/outputs/
+        --path azureml://jobs/azureml-GA-run22/outputs/artifacts/paths/outputs/
         --type custom_model
 
         # Big problem: Ensuring the training job has completed

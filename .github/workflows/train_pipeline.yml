@@ -35,7 +35,10 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - run: az extension add -n azure-cli-ml
+    - run: |
+        az extension remove -n azure-cli-ml
+        az extension remove -n ml
+        az extension add -n ml -y
     - name: register-step
       run: az ml model create 
         -n GA_model

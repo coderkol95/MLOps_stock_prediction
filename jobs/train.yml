@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 environment_variables:
-  ticker: ONGC
   local_model: "local_model"
   job_name: ga-run
-  compute_name: computer456
+  # compute_name: computer456       -> Line 24
+  # ticker: ONGC                    -> Line 21
 
-name: $job_name # Needs to be same in model register step in train_pipeline.yml
+name: $job_name
 tags:
     modeltype: pytorch
 code: ../jobs
@@ -18,10 +18,10 @@ command: >-
 inputs:
   data:
     type: uri_file
-    path: azureml: ${ticker}
+    path: azureml:ONGC@latest
   test_train_ratio: 0.25
 environment: azureml:stock-pricing:0.1
-compute: azureml:$compute_name
+compute: azureml:computer456
 display_name: stock-prediction
 experiment_name: github-action-test
 description: Training job via Github actions

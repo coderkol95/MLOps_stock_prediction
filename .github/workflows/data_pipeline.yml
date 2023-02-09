@@ -1,7 +1,7 @@
 name: data upload to azure
 
 env:
-  ticker: LT.NS
+  ticker: ONGC.NS
   start: 366
   end: 1
 
@@ -19,13 +19,6 @@ on:
     - cron: "1 1 * * 1"
 
 jobs:
-  checker:
-    runs-on: ubuntu-latest
-    steps:
-    - run: echo $ticker
-    - run: echo $start
-    - run: echo $end
-
   datawork:
     runs-on: ubuntu-latest
     steps:

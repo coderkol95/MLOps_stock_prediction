@@ -6,6 +6,7 @@ import os
 import pandas as pd
 import re
 import argparse
+import numpy as np
 
 def get_ticker_data(
     TICKER:str,
@@ -46,24 +47,23 @@ def get_ticker_data(
             
             tags = get_dataset_tags(tickerData)
             save_to_data_upload(path, TICKER, tags)
-            # with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-        #     print(f"downloaded=True", f)
+
     except:
         logging.error("Problem with downloading data from YFinance.")
 
 def get_dataset_tags(df):
 
     """
-    Return dataset stats for storing against Azure dataset.
+    Return dataset tags for storing against Azure dataset.
 
     """
 
     tags={
-            'Length':len(df),
-            'Start':str(df.index[0].date()),
-            'End':str(df.index[-1].date()),
-            'Median':df.median(),
-            'SD':df.std()}
+            'Length':   len(df),
+            'Start':    str(df.index[0].date()),
+            'End':      str(df.index[-1].date()),
+            'Median':   np.round(df.median(),2),
+            'SD':       np.round(df.std(),2)}
     return tags
 
 def save_to_data_upload(path, ticker, tags):
@@ -96,11 +96,10 @@ if __name__=="__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--ticker',type=str, help="Ticker from YFinance that you want to download.")
-    parser.add_argument('--start',type=str, help="Lookback period start in days, eg.366.")
-    parser.add_argument('--end',type=str, help="Lookback period end in days, eg.1.")
+    parser.add_argument('--ticker',type=str, required=True, help="Ticker from YFinance that you want to download.")
+    parser.add_argument('--start',type=str, help="Lookback period start in days, eg.366.", default=366)
+    parser.add_argument('--end',type=str, help="Lookback period end in days, eg.1.", default=1)
+
     args = parser.parse_args()
-    TICKER=args.ticker
-    start=int(args.start)
-    end=int(args.end)
-    get_ticker_data(TICKER,start,end)
+
+    get_ticker_data(args.ticker, int(args.start), int(args.end))

@@ -1,4 +1,0 @@
-parameters:
-  - name: ticker
-    type: str
-    value: CIPLA

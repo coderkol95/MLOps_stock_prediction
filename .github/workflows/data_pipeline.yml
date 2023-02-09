@@ -1,46 +1,58 @@
 name: data upload to azure
 
-extends:
-  template: data_details.yml 
+env:
+  ticker: CIPLA.NS
+  start: 366
+  end: 1
+  cron_schedule: "1 1 * * 1"
 
 on:
   push:
     branches: [ data-upload-automation ]
   pull_request:
     branches: [ main ]
-  
+    paths:
+    - .github/workflows/data_pipeline.yml
+    - jobs/data_download.py
+    - jobs/data_upload.yml
+    - cli/setup.sh
+  schedule:
+    - cron: $cron_schedule
+
 jobs:
   checker:
     runs-on: ubuntu-latest
     steps:
-    - run: echo {{parameters.ticker}}
+    - run: echo $ticker
+    - run: echo $start
+    - run: echo $end
 
-  # downloaddata:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: checkout repository
-  #     uses: actions/checkout@v2
-  #   - name: setup python 3.9
-  #     uses: actions/setup-python@v4
-  #     with: 
-  #       python-version: "3.9"
-  #   - name: install python packages
-  #     run: |
-  #       python -m pip install --upgrade pip
-  #       pip install -r requirements.txt
-  #   - name: download ticker data and update yml file
-  #     run: python data_download.py --ticker NTPC.NS --start 366 --end 1 #####
-  #     id: data
-  #     working-directory: jobs
-  #   - name: push new file to github
-  #     run: |
-  #       git config --local user.email "action@github.com"
-  #       git config --local user.name "GitHub Action"
-  #       git add -A
-  #       git commit -m "Latest ticker data downloaded and YAML file updated" || exit 0
-  #       git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  downloaddata:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+    - name: setup python 3.9
+      uses: actions/setup-python@v4
+      with: 
+        python-version: "3.9"
+    - name: install python packages
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: download ticker data and update yml file
+      run: python data_download.py --ticker $ticker --start $start --end $end
+      id: data
+      working-directory: jobs
+    - name: push new file to github
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git commit -m "Ticker data for $ticker downloaded and YAML file updated." || exit 0
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # uploaddata:
   #   needs: downloaddata
   #   runs-on: ubuntu-latest
@@ -57,7 +69,3 @@ jobs:
   #     continue-on-error: true
   #   - name: upload to azure
   #     run: az ml data create -f jobs/data_upload.yml
-
-# # #
-# Remaining: if clause to not run the azure upload step if file is not downloaded
-# # #

@@ -25,8 +25,10 @@ jobs:
     - name: create-compute
       run: |
         az ml compute create
+        --type AmlCompute
+        --min-instances 1
+        --max-instances 2 
         --name $compute_name 
-        --type computeinstance 
         --size STANDARD_DS11_v2
     - name: train-job
       working-directory: jobs

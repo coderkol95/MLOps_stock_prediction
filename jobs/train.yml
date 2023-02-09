@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 environment_variables:
-  local_model: "local_model"
+  local_model: local_model
   job_name: ga-run
   # compute:                    -> Line 24
   # path:                       -> Line 21

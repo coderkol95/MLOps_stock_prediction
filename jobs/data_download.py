@@ -9,7 +9,7 @@ import argparse
 import numpy as np
 
 def get_ticker_data(
-    TICKER:str,
+    ticker:str,
     start:int,
     end:int):
 
@@ -24,7 +24,7 @@ def get_ticker_data(
         start = str(datetime.today().date()-timedelta(days=start))
         end = str(datetime.today().date()-timedelta(days=end))
 
-        tickerData=yf.download(TICKER,start=start, end=end, period='1d')
+        tickerData=yf.download(ticker,start=start, end=end, period='1d')
         tickerData['Date']=[str(x)[:10] for x in tickerData.index]
 
         if tickerData.shape[0]==0:
@@ -39,14 +39,14 @@ def get_ticker_data(
             logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
             with open(os.environ['GITHUB_OUTPUT'],'w') as f:
-                print(f"tickername={TICKER[:TICKER.index('.')]}", f)
+                print(f"tickername={ticker[:ticker.index('.')]}", f)
 
             # Only persisting the latest in the repository
-            path = f'../data/{TICKER}.csv'
+            path = f'../data/{ticker}.csv'
             tickerData.to_csv(path,index=True)
             
             tags = get_dataset_tags(tickerData)
-            save_to_data_upload(path, TICKER, tags)
+            save_to_data_upload(path, ticker, tags)
 
     except:
         logging.error("Problem with downloading data from YFinance.")
@@ -76,7 +76,7 @@ def save_to_data_upload(path, ticker, tags):
     try:
         name=ticker[:ticker.index('.')]
         version=re.sub('-','',str(datetime.today().date()))
-        description=f"Stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval."
+        description=f"Stock data for {ticker} during {tags['Start']}:{tags['End']} in 1d interval."
         path=path
         tags=tags
 
@@ -88,9 +88,9 @@ def save_to_data_upload(path, ticker, tags):
             f"""$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
             \ntype: uri_file\nname: '{name}'\ndescription: {description}\npath: '{path}'\ntags: {tags}\nversion: {version}""")
 
-        logging.info(f"Uploaded stock data for {TICKER} during {tags['Start']}:{tags['End']} in 1d interval.")
+        logging.info(f"Uploaded stock data for {ticker} during {tags['Start']}:{tags['End']} in 1d interval.")
     except:
-        logging.error("Problem with persisting data to Azure ML datastore.")
+        logging.error("Problem with writing data to upload YAML file.")
 
 if __name__=="__main__":
 

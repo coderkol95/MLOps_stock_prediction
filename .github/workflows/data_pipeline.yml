@@ -1,7 +1,7 @@
 name: data upload to azure
 
 env:
-  ticker: CIPLA.NS
+  ticker: LT.NS
   start: 366
   end: 1
 
@@ -26,7 +26,7 @@ jobs:
     - run: echo $start
     - run: echo $end
 
-  downloaddata:
+  datawork:
     runs-on: ubuntu-latest
     steps:
     - name: checkout repository
@@ -52,12 +52,6 @@ jobs:
         git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  uploaddata:
-    needs: downloaddata
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout repository
-      uses: actions/checkout@v2
     - name: azure login
       uses: azure/login@v1
       with:

@@ -4,7 +4,6 @@ env:
   ticker: CIPLA.NS
   start: 366
   end: 1
-  cron_schedule: "1 1 * * 1"
 
 on:
   push:
@@ -17,7 +16,7 @@ on:
     - jobs/data_upload.yml
     - cli/setup.sh
   schedule:
-    - cron: $cron_schedule
+    - cron: "1 1 * * 1"
 
 jobs:
   checker:

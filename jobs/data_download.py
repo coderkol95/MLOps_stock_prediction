@@ -20,36 +20,34 @@ def get_ticker_data(
 
     """
 
-    try:
-        start = str(datetime.today().date()-timedelta(days=start))
-        end = str(datetime.today().date()-timedelta(days=end))
+    # try:
+    start = str(datetime.today().date()-timedelta(days=start))
+    end = str(datetime.today().date()-timedelta(days=end))
 
-        tickerData=yf.download(ticker,start=start, end=end, period='1d')
-        tickerData['Date']=[str(x)[:10] for x in tickerData.index]
+    tickerData=yf.download(ticker,start=start, end=end, period='1d')
+    tickerData['Date']=[str(x)[:10] for x in tickerData.index]
 
-        if tickerData.shape[0]==0:
-            raise ValueError("No data found via YFinance.")
+    if tickerData.shape[0]==0:
+        raise ValueError("No data found via YFinance.")
 
-        logging.info(f"{os.getcwd()}")
-        logging.info(f"Length of ticker data: {tickerData.shape[0]}")
-        if tickerData.shape[0]!=0:
+    logging.info(f"{os.getcwd()}")
+    logging.info(f"Length of ticker data: {tickerData.shape[0]}")
+    if tickerData.shape[0]!=0:
 
-            tickerData = tickerData['Close']
+        tickerData = tickerData['Close']
 
-            logging.info(f"Length of ticker data: {len(tickerData.index)}")
-
-            with open(os.environ['GITHUB_OUTPUT'],'w') as f:
-                print(f"tickername={ticker[:ticker.index('.')]}", f)
+        logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
             # Only persisting the latest in the repository
-            path = f'../data/{ticker}.csv'
-            tickerData.to_csv(path,index=True)
-            
-            tags = get_dataset_tags(tickerData)
-            save_to_data_upload(path, ticker, tags)
+        path = f'../data/{ticker}.csv'
+        tickerData.to_csv(path,index=True)
+    # except:
+    #     logging.error("Problem with downloading data from YFinance.")
+    
+    tags = get_dataset_tags(tickerData)
+    save_to_data_upload(path, ticker, tags)
 
-    except:
-        logging.error("Problem with downloading data from YFinance.")
+
 
 def get_dataset_tags(df):
 

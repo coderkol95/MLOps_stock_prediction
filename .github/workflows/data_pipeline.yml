@@ -52,19 +52,19 @@ jobs:
         git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  uploaddata:
-    needs: downloaddata
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout repository
-      uses: actions/checkout@v2
-    - name: azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: setup
-      run: bash setup.sh
-      working-directory: cli
-      continue-on-error: true
-    - name: upload to azure
-      run: az ml data create -f jobs/data_upload.yml
+  # uploaddata:
+  #   needs: downloaddata
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: checkout repository
+  #     uses: actions/checkout@v2
+  #   - name: azure login
+  #     uses: azure/login@v1
+  #     with:
+  #       creds: ${{secrets.AZURE_CREDENTIALS}}
+  #   - name: setup
+  #     run: bash setup.sh
+  #     working-directory: cli
+  #     continue-on-error: true
+  #   - name: upload to azure
+  #     run: az ml data create -f jobs/data_upload.yml

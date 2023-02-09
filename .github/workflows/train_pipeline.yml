@@ -24,7 +24,7 @@ jobs:
       continue-on-error: true
     - name: create-compute
       run: |
-        az ml compute create -f 
+        az ml compute create
         --name $compute_name 
         --type computeinstance 
         --size STANDARD_DS11_v2

@@ -7,7 +7,10 @@ import pandas as pd
 import re
 import argparse
 
-def get_ticker_data(TICKER:str):
+def get_ticker_data(
+    TICKER:str,
+    start:int,
+    end:int):
 
     """
     1. Download ticker data using YFinance
@@ -17,8 +20,8 @@ def get_ticker_data(TICKER:str):
     """
 
     try:
-        start = str(datetime.today().date()-timedelta(days=366))
-        end = str(datetime.today().date()-timedelta(days=1))
+        start = str(datetime.today().date()-timedelta(days=start))
+        end = str(datetime.today().date()-timedelta(days=end))
 
         tickerData=yf.download(TICKER,start=start, end=end, period='1d')
         tickerData['Date']=[str(x)[:10] for x in tickerData.index]
@@ -35,7 +38,7 @@ def get_ticker_data(TICKER:str):
             logging.info(f"Length of ticker data: {len(tickerData.index)}")
 
             with open(os.environ['GITHUB_OUTPUT'],'w') as f:
-                print(f"filename={TICKER[:TICKER.index('.')]}", f)
+                print(f"tickername={TICKER[:TICKER.index('.')]}", f)
 
             # Only persisting the latest in the repository
             path = f'../data/{TICKER}.csv'
@@ -93,7 +96,11 @@ if __name__=="__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--TICKER',type=str, help="TICKER from YFinance that you want to download.")
+    parser.add_argument('--ticker',type=str, help="Ticker from YFinance that you want to download.")
+    parser.add_argument('--start',type=str, help="Lookback period start in days, eg.366.")
+    parser.add_argument('--end',type=str, help="Lookback period end in days, eg.1.")
     args = parser.parse_args()
-    TICKER=args.TICKER
-    get_ticker_data(TICKER=TICKER)
+    TICKER=args.ticker
+    start=int(args.start)
+    end=int(args.end)
+    get_ticker_data(TICKER,start,end)

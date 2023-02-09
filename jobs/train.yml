@@ -2,8 +2,8 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 environment_variables:
   local_model: "local_model"
   job_name: ga-run
-  compute: azureml:computer456                 #-> Line 24
-  path: azureml:ONGC@latest                    #-> Line 21
+  # compute:                    -> Line 24
+  # path:                       -> Line 21
 
 name: $job_name
 tags:
@@ -18,10 +18,10 @@ command: >-
 inputs:
   data:
     type: uri_file
-    path: $path
+    path: azureml:ONGC@latest
   test_train_ratio: 0.25
 environment: azureml:stock-pricing:0.1
-compute: $compute
+compute: azureml:computer456
 display_name: stock-prediction
 experiment_name: github-action-test
 description: Training job via Github actions

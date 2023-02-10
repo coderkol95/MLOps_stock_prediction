@@ -24,12 +24,12 @@ Azure ML SDK v2
         - [X] Delete local file - not doing, keeping only one file
         - [X] Option to input ticker during cron job
 
-    - [ ] train: 
+    - [X] train: 
         Model re-training and publishing of metrics
-        - [ ] Model version details - hyperparameters, model structure
-        - [ ] Publish performance metrics
+        - [ ] Model version details - hyperparameters, model structure - will do when improving model
+        - [X] Publish performance metrics
 
-    - [ ] register: 
+    - [X] register: 
         Model registration and comparison with previous models
         - [ ] Performance, fairness, bias, equity and other responsible AI metrics to be measured
         - [ ] Model profiling

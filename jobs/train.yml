@@ -1,9 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 environment_variables:
-  local_model: local_model
-  job_name: ga-run
-  # compute:                    -> Line 24
-  # path:                       -> Line 21
+  job_name: ga-run-2
 
 name: $job_name
 tags:
@@ -13,8 +10,7 @@ command: >-
   python train.py 
   --data ${{inputs.data}}
   --test_train_ratio ${{inputs.test_train_ratio}}
-  --local_model_name $local_model
-  --ticker $ticker
+  # --local_model_name $model
 inputs:
   data:
     type: uri_file
@@ -22,6 +18,6 @@ inputs:
   test_train_ratio: 0.25
 environment: azureml:stock-pricing:0.1
 compute: azureml:computer456
-display_name: stock-prediction
-experiment_name: github-action-test
+display_name: stock-price-prediction
+experiment_name: github-action-train-job
 description: Training job via Github actions

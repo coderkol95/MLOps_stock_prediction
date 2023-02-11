@@ -36,6 +36,9 @@ jobs:
       run: python data_download.py --ticker $ticker --start $start --end $end
       id: data
       working-directory: jobs
+    - name: edit training yaml files
+      run: python update_training_yamls.py --ticker $ticker
+      working-directory: jobs
     - name: push new file to github
       run: |
         git config --local user.email "action@github.com"

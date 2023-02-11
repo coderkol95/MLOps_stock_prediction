@@ -20,9 +20,6 @@ on:
 
 jobs:
   datawork:
-    permissions:
-      actions: write
-      workflows: 
     runs-on: ubuntu-latest
     steps:
     - name: checkout repository

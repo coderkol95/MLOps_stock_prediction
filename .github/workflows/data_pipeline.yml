@@ -20,6 +20,7 @@ on:
 
 jobs:
   datawork:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
     - name: checkout repository
@@ -37,7 +38,7 @@ jobs:
       id: data
       working-directory: jobs
     - name: edit training yaml files
-      run: python update_training_yamls.py --ticker $ticker
+      run: python update_training_yamls.py
       working-directory: jobs
     - name: push new file to github
       run: |

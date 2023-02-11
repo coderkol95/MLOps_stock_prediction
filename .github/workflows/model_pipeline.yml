@@ -1,7 +1,7 @@
 name: training and registering model
 
 env:
-  job_name: ga-run-4
+  job_name: ga-run-5
   compute_name: computer456
   registered_model_name: GA_model
 
@@ -32,7 +32,7 @@ jobs:
     #   with:
     #     repo-token: ${{ secrets.PAT }}
     #     check-name: 'train-job'
-
+# If training is expected to take a long time, registration can be scheduled in a separate cron job, triggered later.
   register-job:
     needs: [train-job]
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
       run: az ml model create
         --name $registered_model_name 
         --version 7
-        --path azureml://jobs/ga-run-4/outputs/artifacts/paths/outputs/
+        --path azureml://jobs/ga-run-5/outputs/artifacts/paths/outputs/
         --type custom_model
 
   delete-compute:

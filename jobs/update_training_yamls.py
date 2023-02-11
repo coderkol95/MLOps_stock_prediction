@@ -3,26 +3,26 @@ from datetime import datetime
 import re
 from copy import deepcopy
 
-#train_pipeline
+#model_pipeline
 
-with open('../.github/workflows/train_pipeline.yml','r') as f:
-    train_pipeline=f.read()
+with open('../.github/workflows/model_pipeline.yml','r') as f:
+    model_pipeline=f.read()
 
-run_id=re.findall('run-[0-9]',train_pipeline)
+run_id=re.findall('run-[0-9]',model_pipeline)
 run_id=run_id[0]
 run_n = int(re.findall('[0-9]',run_id)[0])
 new_run_id = f"run-{run_n+1}"
 
-model_version=re.findall('--version [0-9]',train_pipeline)
+model_version=re.findall('--version [0-9]',model_pipeline)
 model_version = model_version[0]
 version = int(re.findall('[0-9]',model_version)[0])
 new_model_version = f"--version {version+1}"
 
-train_pipeline= re.sub(model_version, new_model_version, train_pipeline)
-train_pipeline=re.sub(run_id, new_run_id, train_pipeline)
+model_pipeline= re.sub(model_version, new_model_version, model_pipeline)
+model_pipeline=re.sub(run_id, new_run_id, model_pipeline)
 
-with open('../.github/workflows/train_pipeline.yml','w') as f:
-    f.write(train_pipeline)
+with open('../.github/workflows/model_pipeline.yml','w') as f:
+    f.write(model_pipeline)
 
 #train
 

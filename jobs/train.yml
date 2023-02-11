@@ -15,7 +15,7 @@ inputs:
     type: uri_file
     path: azureml:WIPRO@latest
 environment: azureml:stock-pricing:0.1
-compute: azureml: computer456
+compute: azureml:computer456
 display_name: stock-price-prediction
 experiment_name: github-action-train-job
 description: Training job via Github actions

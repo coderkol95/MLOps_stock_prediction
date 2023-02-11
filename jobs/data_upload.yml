@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
             
 type: uri_file
-name: 'ONGC'
-description: Stock data for ONGC.NS during 2022-02-08:2023-02-07 in 1d interval.
-path: '../data/ONGC.NS.csv'
-tags: {'Length': 249, 'Start': '2022-02-08', 'End': '2023-02-07', 'Median': 143.75, 'SD': 15.33}
-version: 20230209
+name: 'WIPRO'
+description: Stock data for WIPRO.NS during 2022-02-10:2023-02-09 in 1d interval.
+path: '../data/WIPRO.NS.csv'
+tags: {'Length': 249, 'Start': '2022-02-10', 'End': '2023-02-09', 'Median': 414.65, 'SD': 69.81}
+version: 20230211

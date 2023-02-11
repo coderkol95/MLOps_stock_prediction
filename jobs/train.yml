@@ -9,15 +9,13 @@ code: ../jobs
 command: >-
   python train.py 
   --data ${{inputs.data}}
-  --test_train_ratio ${{inputs.test_train_ratio}}
-  # --local_model_name $model
+  --test_train_ratio 0.25
 inputs:
   data:
     type: uri_file
     path: azureml:WIPRO@latest
-  test_train_ratio: 0.25
 environment: azureml:stock-pricing:0.1
-compute: azureml:computer456
+compute: azureml: computer456
 display_name: stock-price-prediction
 experiment_name: github-action-train-job
 description: Training job via Github actions

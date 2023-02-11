@@ -13,9 +13,9 @@ command: >-
 inputs:
   data:
     type: uri_file
-    path: azureml:WIPRO@latest
+    path: azureml:WIPRO@latest # There shouldn't be space after 'azureml:'
 environment: azureml:stock-pricing:0.1
 compute: azureml:computer456
-display_name: stock-price-prediction
-experiment_name: github-action-train-job
+display_name: stock_price_prediction
+experiment_name: github_action_train_job
 description: Training job via Github actions

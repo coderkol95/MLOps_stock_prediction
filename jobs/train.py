@@ -85,7 +85,7 @@ def main():
     # input and output arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, help="Path to input data")
-    parser.add_argument("--local_model_name", type=str, default='local_model')
+    parser.add_argument("--local_model_name", type=str, default='model')
     parser.add_argument("--test_train_ratio", type=float, default=0.25)
 
     args = parser.parse_args()

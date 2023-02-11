@@ -25,7 +25,8 @@ jobs:
     - name: checkout repository
       uses: actions/checkout@v2
       with:
-        token: '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'
+        token: ${{ secrets.PAT }}
+        repository: 'MLOps_stock_prediction'
     - name: setup python 3.9
       uses: actions/setup-python@v4
       with: 

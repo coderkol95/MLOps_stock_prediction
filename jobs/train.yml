@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 environment_variables:
-  job_name: ga-run-3
+  job_name: ga-run-4
 
 name: $job_name
 tags:

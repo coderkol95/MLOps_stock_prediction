@@ -1,13 +1,13 @@
 name: data upload to azure
 
 env:
-  ticker: ONGC.NS
+  ticker: WIPRO.NS
   start: 366
   end: 1
 
 on:
   push:
-    branches: [ data-upload-automation ]
+    branches: [ data-upload-automation, main ]
   pull_request:
     branches: [ main ]
     paths:

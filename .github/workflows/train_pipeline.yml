@@ -7,8 +7,7 @@ env:
 
 on:
   push:
-    branches:
-      - "training-automation"
+    branches: [training-automation]
 jobs:
   train-job:
     runs-on: ubuntu-latest

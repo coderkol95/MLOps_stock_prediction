@@ -44,3 +44,16 @@ train=re.sub(uri_path, new_uri_path, train)
 
 with open('../jobs/train.yml','w') as f:
     f.write(train)
+
+#deploy
+
+with open('../jobs/deploy.yml','r') as f:
+    deploy=f.read()
+
+curr_model=re.findall('GA_model:[0-9]',deploy)[0]
+curr_model_version = curr_model.split(':')[1]
+curr_model_version  = int(curr_model_version) + 1
+deploy=re.sub('GA_model:[0-9]',f'GA_model:{curr_model_version}',deploy)
+
+with open('../jobs/deploy.yml','w') as f:
+    f.write(deploy)

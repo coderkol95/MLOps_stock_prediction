@@ -1,10 +1,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-name: blue
-endpoint_name: GA-deployment
-model: azureml:GA_model:2
+name: green
+endpoint_name: ga-deployment
+model: azureml:GA_model:8
 code_configuration:
   code: ../jobs
   scoring_script: deployment.py
-environment: azureml:stock-pricing:0.2
+environment: azureml:stock-pricing:4
 instance_type: Standard_DS1_v2
 instance_count: 1

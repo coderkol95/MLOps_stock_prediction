@@ -43,16 +43,6 @@ class dataset(pl.LightningDataModule):
         y = np.array(y).reshape(-1,1)
         return TensorDataset(torch.from_numpy(X), torch.from_numpy(y))
     
-    def predict_tensors(self,df):
-    
-        X = []
-
-        for i in np.arange(self.lookback_size, len(df)+1):
-            X.append(df[i-self.lookback_size:i])
-        
-        X = np.array(X).reshape(-1,self.lookback_size,1)
-        return torch.from_numpy(X).float()
-
     def setup(self, stage=None):
         
         self.train_df = self.scaler.transform(self.train_df) 
@@ -71,12 +61,6 @@ class dataset(pl.LightningDataModule):
 
     def test_dataloader(self):
        return DataLoader(self.test_data, batch_size=self.batch_size)
-
-    def predict_dataloader(self, data):
-        self.pred_df= self.scaler.transform(data)
-        self.pred_data = self.predict_tensors(self.pred_df)
-        return self.pred_data
-
 class model(pl.LightningModule):
 
     def __init__(self,lookback_size=5):
@@ -120,10 +104,6 @@ class model(pl.LightningModule):
         logits,_ = self.forward(x.type(torch.float32)) 
         loss = self.loss(logits.float(), y.float())
         self.log("test_loss", loss)
-
-    def predict_step(self,batch, batch_idx, dataloader_idx=0):
-        X,_=batch
-        return self(X.type(torch.float32))
 
 def train(args):
 

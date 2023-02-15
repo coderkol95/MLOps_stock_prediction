@@ -1,8 +1,16 @@
 name: model deployment
 on:
   push:
-    branches:
-      - "deployment-automation"
+    branches: [deploy-automation]
+  # pull_request:
+  #   branches: [ main ]
+  #   paths:
+  #   - .github/workflows/data_pipeline.yml
+  #   - jobs/data_download.py
+  #   - jobs/data_upload.yml
+  #   - cli/setup.sh
+  # schedule:
+  #   - cron: "1 3 * * 1"
 jobs:
   # compare-job:
   #  Compare if the model is good enough
@@ -22,7 +30,7 @@ jobs:
       working-directory: cli
       continue-on-error: true
     - name: create-endpoint
-      run: az ml online-endpoint create --name GA-deployment
+      run: az ml online-endpoint create --name ga-deployment
     - name: deployment-step
-      run: az ml online-deployment create -f deploy.yml # Ensure local model name matches
+      run: az ml online-deployment create -f deploy.yml
       working-directory: jobs

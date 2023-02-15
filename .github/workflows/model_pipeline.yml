@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [training-automation, main]
+    branches: [training-automation]
   # pull-request:
   #   branches: [ main ]
   #   paths:
@@ -54,7 +54,7 @@ jobs:
     - name: register-model
       run: az ml model create
         --name $registered_model_name 
-        --version 8
+        --version 9
         --path azureml://jobs/ga-run-8/outputs/artifacts/paths/outputs/
         --type custom_model
 

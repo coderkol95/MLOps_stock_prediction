@@ -24,21 +24,21 @@ Azure ML SDK v2
         - [X] Delete local file - not doing, keeping only one file
         - [X] Option to input ticker during cron job
 
-    - [X] train: 
+    - [X] train:
         Model re-training and publishing of metrics
-        - [ ] Model version details - hyperparameters, model structure - will do when improving model
+        - [X] Model version details - hyperparameters, model structure - will do when improving model - done via source control. Can add tags when specifically improving the model.
         - [X] Publish performance metrics
 
-    - [X] register: 
-        Model registration and comparison with previous models
-        - [ ] Performance, fairness, bias, equity and other responsible AI metrics to be measured
+    - [X] register:
+        Model registration with metrics
+        - [X] Performance, fairness, bias, equity and other responsible AI metrics to be measured - NA in this case
         - [ ] Model profiling
 
 3. Release pipeline - To deploy : trigger=new model availability
 
-    - [ ] Parallely deploy the latest model
+    - [ ] Compare current model with previous models and deploy if good enough
+        - [ ] Compare with live model
         - [ ] Create template for provisioning
-        - [ ] Option for rollback
         - [ ] Enable useful logging
 
     - [ ] Monitoring

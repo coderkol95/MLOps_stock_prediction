@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-name: ga-run-7
+name: ga-run-8
 tags:
     modeltype: pytorch
 code: ../jobs
@@ -10,7 +10,7 @@ inputs:
   data:
     type: uri_file
     path: azureml:WIPRO@latest # There shouldn't be space after 'azureml:'
-environment: azureml:stock-pricing:3
+environment: azureml:stock-pricing:4
 compute: azureml:computer456
 display_name: stock
 experiment_name: ga_train_job

@@ -1,7 +1,7 @@
 name: training and registering model
 
 env:
-  job_name: ga-run-7
+  job_name: ga-run-8
   compute_name: computer456
   registered_model_name: GA_model
 
@@ -55,7 +55,7 @@ jobs:
       run: az ml model create
         --name $registered_model_name 
         --version 8
-        --path azureml://jobs/ga-run-7/outputs/artifacts/paths/outputs/
+        --path azureml://jobs/ga-run-8/outputs/artifacts/paths/outputs/
         --type custom_model
 
   delete-compute:

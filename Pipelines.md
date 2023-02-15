@@ -36,12 +36,16 @@ Azure ML SDK v2
 
 3. Release pipeline - To deploy : trigger=new model availability
 
+    There can be need for re-training & re-deployment under two scenarios:
+    1. Data drifts frequently and model is updated on schedule( this is the case in this project )
+    2. Data drift needs to be detected and model needs to be subsequently retrained. In that case the below unchecked points need to be looked at.
+
     - [ ] Compare current model with previous models and deploy if good enough
         - [ ] Compare with live model
-        - [ ] Create template for provisioning
-        - [ ] Enable useful logging
+        - [X] Create template for provisioning
+        - [X] Enable useful logging
 
     - [ ] Monitoring
         - [ ] Data drift
-        - [ ] Infrastructure performance
-        - [ ] Model performance
+        - [ ] Infrastructure performance - CI
+        - [ ] Model performance on LIVE data - CI

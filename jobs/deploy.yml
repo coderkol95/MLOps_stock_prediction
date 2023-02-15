@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: green
 endpoint_name: ga-deployment
-model: azureml:GA_model:9
+model: azureml:GA_model:10
 code_configuration:
   code: ../jobs
   scoring_script: deployment.py

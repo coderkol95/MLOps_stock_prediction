@@ -6,8 +6,8 @@ env:
   end: 1
 
 on:
-  push:
-    branches: [data-upload-automation, main]
+  # push:
+    # branches: [data-upload-automation, main] # Can't trigger on push because github actions pushes changes
   # pull_request:
   #   branches: [ main ]
   #   paths:
@@ -15,8 +15,8 @@ on:
   #   - jobs/data_download.py
   #   - jobs/data_upload.yml
   #   - cli/setup.sh
-  # schedule:
-  #   - cron: "1 1 * * 1"
+  schedule:
+    - cron: "1 1 * * 1"
 
 jobs:
   datawork:

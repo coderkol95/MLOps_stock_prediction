@@ -8,6 +8,15 @@ env:
 on:
   push:
     branches: [training-automation, main]
+  # pull-request:
+  #   branches: [ main ]
+  #   paths:
+  #   - .github/workflows/model_pipeline.yml
+  #   - jobs/train.py
+  #   - jobs/train.yml
+    # schedule:
+    # - cron: "1 2 * * 1"
+
 jobs:
   train-job:
     runs-on: ubuntu-latest

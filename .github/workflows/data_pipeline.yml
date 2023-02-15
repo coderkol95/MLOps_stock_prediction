@@ -7,16 +7,16 @@ env:
 
 on:
   push:
-    branches: [ data-upload-automation]
-  pull_request:
-    branches: [ main ]
-    paths:
-    - .github/workflows/data_pipeline.yml
-    - jobs/data_download.py
-    - jobs/data_upload.yml
-    - cli/setup.sh
-  schedule:
-    - cron: "1 1 * * 1"
+    branches: [data-upload-automation]
+  # pull_request:
+  #   branches: [ main ]
+  #   paths:
+  #   - .github/workflows/data_pipeline.yml
+  #   - jobs/data_download.py
+  #   - jobs/data_upload.yml
+  #   - cli/setup.sh
+  # schedule:
+  #   - cron: "1 1 * * 1"
 
 jobs:
   datawork:

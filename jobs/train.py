@@ -1,83 +1,140 @@
 import os
 import argparse
-import pandas as pd
-import torch
-from sklearn.preprocessing import  MinMaxScaler
-from sklearn.model_selection import train_test_split
-import pickle
-import numpy as np
 from sklearn.metrics import mean_absolute_percentage_error
-import mlflow
-mlflow.autolog()
+import pytorch_lightning as pl
+import numpy as np 
+from torch.utils.data import DataLoader, TensorDataset
+import torch
+import pandas as pd
+import pickle
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 
-def series_to_tensors(series, lookaheadSize=5):
+class dataset(pl.LightningDataModule):
 
-    X,y = [],[]
-    for i in np.arange(5,len(series)-1):
-        X.append(series[i-lookaheadSize:i])
-        y.append(series[i+1])
-    X = np.array(X)
-    y = np.array(y)
-    X = X.reshape(len(series)-lookaheadSize-1,1,5)
-    y=y.reshape(-1,1)
+    def __init__(self, data=None, scaler=None):
+        super(dataset,self).__init__()
+        self.lookback_size = 5
+        self.batch_size = 32
 
-    dataset = torch.utils.data.TensorDataset(torch.from_numpy(X), torch.from_numpy(y))
+        if data is not None:
+            self.data=data
+            self.series = pd.read_csv(self.data, index_col='Date')
+            # Train:valid:test = 80:10:10
+            self.train_df, self.valid_df = train_test_split(self.series, test_size=0.2)
+            self.valid_df, self.test_df = train_test_split(self.valid_df, test_size=0.5)
+
+        if scaler is None and data is not None:
+            self.scaler = MinMaxScaler().fit(self.train_df)
+        else:
+            self.scaler=scaler
+
+    def train_tensors(self,df):
+
+        X, y = [], []
+
+        for i in np.arange(self.lookback_size, len(df)-1):
+            X.append(df[i-self.lookback_size:i])
+            y.append(df[i+1])
+
+        X = np.array(X).reshape(-1,self.lookback_size,1)
+        y = np.array(y).reshape(-1,1)
+        return TensorDataset(torch.from_numpy(X), torch.from_numpy(y))
     
-    return dataset, torch.from_numpy(X), y
+    def predict_tensors(self,df):
+    
+        X = []
 
-def dataprep(args):
+        for i in np.arange(self.lookback_size, len(df)+1):
+            X.append(df[i-self.lookback_size:i])
+        
+        X = np.array(X).reshape(-1,self.lookback_size,1)
+        return torch.from_numpy(X).float()
 
-    stockData = pd.read_csv(args.data, index_col='Date')
-    stock_train_df, stock_test_df = train_test_split(stockData, test_size=args.test_train_ratio)
+    def setup(self, stage=None):
+        
+        self.train_df = self.scaler.transform(self.train_df) 
+        self.valid_df = self.scaler.transform(self.valid_df) 
+        self.test_df = self.scaler.transform(self.test_df) 
 
-    print(stock_train_df)
+        self.train_data = self.train_tensors(self.train_df)
+        self.valid_data = self.train_tensors(self.valid_df)
+        self.test_data = self.train_tensors(self.test_df)
 
-    # Instead of this use LayerNorm or BatchNorm in the neural net
-    scaler = MinMaxScaler().fit(stock_train_df)
-    stock_train_df = scaler.transform(stock_train_df)
-    stock_test_df = scaler.transform(stock_test_df)
+    def train_dataloader(self):
+        return DataLoader(self.train_data, batch_size=self.batch_size)
 
-    train_tensors,_,_ = series_to_tensors(stock_train_df)
-    _,X_test,y_test = series_to_tensors(stock_test_df)
+    def val_dataloader(self):
+       return DataLoader(self.valid_data, batch_size=self.batch_size)
 
-    return scaler, train_tensors, X_test, y_test
+    def test_dataloader(self):
+       return DataLoader(self.test_data, batch_size=self.batch_size)
 
-class lstm_model(torch.nn.Module):
+    def predict_dataloader(self, data):
+        self.pred_df= self.scaler.transform(data)
+        self.pred_data = self.predict_tensors(self.pred_df)
+        return self.pred_data
 
-    def __init__(self):
-        super(lstm_model, self).__init__()
-        self.lstm1=torch.nn.LSTM(batch_first=True, input_size=5, hidden_size=1)
-        self.out=torch.nn.Linear(1,1)
+class model(pl.LightningModule):
+
+    def __init__(self,lookback_size=5):
+
+        super(model,self).__init__()
+
+        self.lookback_size = lookback_size
+        self.lstm=torch.nn.LSTM(batch_first=True, input_size=1, hidden_size=self.lookback_size)
+        self.out=torch.nn.Linear(5,1)
+        self.loss=torch.nn.functional.mse_loss
 
     def forward(self, x, hidden=None):
-        x, hidden = self.lstm1(x)
+        x, hidden = self.lstm(x)
         x = x[:,-1]
         x = self.out(x)
         return x, hidden
 
-def train(trainset, epochs):
+    def configure_optimizers(self):
+        return torch.optim.Adam(params=self.parameters(), lr=1e-3)
 
-    seq_model = lstm_model()
-    optim = torch.optim.Adam(lr = 0.0001, params=seq_model.parameters())
+    def configure_callbacks(self):
+        early_stop = EarlyStopping(monitor="val_loss", mode="min", patience=5)
+        checkpoint = ModelCheckpoint(monitor="val_loss")
+        return [early_stop, checkpoint]
+    
+    def training_step(self, train_batch, batch_idx):
+        x, y = train_batch 
+        logits,_ = self.forward(x.type(torch.float32)) 
+        loss = self.loss(logits.float(), y.float()) 
+        self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        return loss
 
-    for epoch in np.arange(epochs):
+    def validation_step(self, valid_batch, batch_idx): 
+        x, y = valid_batch 
+        logits,_ = self.forward(x.type(torch.float32)) 
+        loss = self.loss(logits.float(), y.float())
+        self.log("val_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
 
-        Loss=0
+    def test_step(self, test_batch, batch_idx): 
+        x, y = test_batch 
+        logits,_ = self.forward(x.type(torch.float32)) 
+        loss = self.loss(logits.float(), y.float())
+        self.log("test_loss", loss)
 
-        for data in trainset:
+    def predict_step(self,batch, batch_idx, dataloader_idx=0):
+        X,_=batch
+        return self(X.type(torch.float32))
 
-            feats, target = data
-            optim.zero_grad()
+def train(args):
 
-            y_p,_ = seq_model(feats.float())
-            loss = torch.nn.functional.mse_loss(y_p.float(), target.float())
+    trainer=pl.Trainer(max_epochs=5)
+    datamod=dataset(args.data)
+    mod=model()
+    trainer.fit(model=mod, datamodule=datamod)
 
-            loss.backward()
-            optim.step()
-            Loss += loss.item()
+    trainer.test(model=mod, datamodule=datamod)
 
-        mlflow.log_metric("Training loss", Loss, step=epoch)
-    return seq_model
+    return mod, datamod.scaler
 
 def main():
     """Main function of the script."""
@@ -85,26 +142,14 @@ def main():
     # input and output arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, help="Path to input data")
-    parser.add_argument("--test_train_ratio", type=float, default=0.25)
 
     args = parser.parse_args()
     
     # Load Scaler object later and send it for scaling data
 
-    scaler, trainset, X_test, y_test = dataprep(args)
+    trainedModel, scalerObj = train(args)
 
-    epochs=10
-    trainedModel = train(trainset, epochs)
-
-    trainedModel.eval()
-
-    y_pred,_=trainedModel(X_test.float())
-
-    mape=mean_absolute_percentage_error(y_test, y_pred.detach().numpy())
-    
-    mlflow.log_metric("MAPE", mape)
-
-    pickle.dump(scaler, open('./outputs/scaler.pkl','wb'))
+    pickle.dump(scalerObj, open('./outputs/scaler.pkl','wb'))
     model_file = f"./outputs/model.pth"
     torch.save(trainedModel.state_dict(), model_file)
 

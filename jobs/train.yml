@@ -6,12 +6,11 @@ code: ../jobs
 command: >-
   python train.py 
   --data ${{inputs.data}}
-  --test_train_ratio 0.25
 inputs:
   data:
     type: uri_file
     path: azureml:WIPRO@latest # There shouldn't be space after 'azureml:'
-environment: azureml:stock-pricing:0.1
+environment: azureml:stock-pricing:3
 compute: azureml:computer456
 display_name: stock
 experiment_name: ga_train_job

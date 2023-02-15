@@ -5,6 +5,6 @@ model: azureml:GA_model:10
 code_configuration:
   code: ../jobs
   scoring_script: deployment.py
-environment: azureml:stock-pricing:4
+environment: azureml:stock-pricing:5
 instance_type: Standard_DS1_v2
 instance_count: 1

@@ -30,8 +30,8 @@ jobs:
       working-directory: cli
       continue-on-error: true
     # Commenting out as endpoint creation is only needed during the first run
-    - name: create-endpoint
-      run: az ml online-endpoint create --name ga-deployment
+    # - name: create-endpoint
+    #   run: az ml online-endpoint create --name ga-deployment
     - name: deployment-step
       run: az ml online-deployment update -f deploy.yml #--all-traffic # First time it'll be az ml ... create --all-traffic
       working-directory: jobs

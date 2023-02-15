@@ -6,8 +6,8 @@ env:
   registered_model_name: GA_model
 
 on:
-  push:
-    branches: [training-automation, main]
+  # push:
+  #   branches: [training-automation, main]
   # pull-request:
   #   branches: [ main ]
   #   paths:

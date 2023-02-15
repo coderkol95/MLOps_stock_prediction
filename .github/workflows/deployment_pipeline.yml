@@ -1,7 +1,7 @@
 name: model deployment
 on:
   push:
-    branches: [deploy-automation]
+    branches: [deploy-automation, main]
   # pull_request:
   #   branches: [ main ]
   #   paths:
@@ -9,8 +9,8 @@ on:
   #   - jobs/data_download.py
   #   - jobs/data_upload.yml
   #   - cli/setup.sh
-  # schedule:
-  #   - cron: "1 3 * * 1"
+  schedule:
+    - cron: "1 3 * * 1"
 jobs:
   # compare-job:
   #  Compare if the model is good enough

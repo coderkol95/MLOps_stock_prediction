@@ -33,5 +33,5 @@ jobs:
     - name: create-endpoint
       run: az ml online-endpoint create --name ga-deployment
     - name: deployment-step
-      run: az ml online-deployment create -f deploy.yml --all-traffic # First time it'll be az ml ... create --all-traffic
+      run: az ml online-deployment update -f deploy.yml #--all-traffic # First time it'll be az ml ... create --all-traffic
       working-directory: jobs

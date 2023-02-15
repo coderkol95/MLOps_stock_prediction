@@ -6,8 +6,8 @@ env:
   registered_model_name: GA_model
 
 on:
-  push:
-    branches: [training-automation, main]
+  # push:
+    # branches: [training-automation, main]
   # pull-request:
   #   branches: [ main ]
   #   paths:
@@ -37,45 +37,40 @@ jobs:
       working-directory: jobs
       run: az ml job create --file train.yml --debug --stream # --stream causes the step to go on, as long as the model trains.
 # If training is expected to take a long time, registration can be scheduled in a separate cron job, triggered later.
-  # register-job:
-  #   needs: [train-job]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: check out repo
-  #     uses: actions/checkout@v2
-  #   - name: azure login
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{secrets.AZURE_CREDENTIALS}}
-  #   - name: setup
-  #     run: bash setup.sh
-  #     working-directory: cli
-  #     continue-on-error: true
-  #   - name: register-model
-  #     run: az ml model create
-  #       --name $registered_model_name 
-  #       --version 10
-  #       --path azureml://jobs/ga-run-9/outputs/artifacts/paths/outputs/
-  #       --type custom_model
+  register-job:
+    needs: [train-job]
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: register-model
+      run: az ml model create
+        --name $registered_model_name 
+        --version 10
+        --path azureml://jobs/ga-run-10/outputs/artifacts/paths/outputs/
+        --type custom_model
 
-  # delete-compute:
-  #   needs: [train-job]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: check out repo
-  #     uses: actions/checkout@v2
-  #   - name: azure login
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{secrets.AZURE_CREDENTIALS}}
-  #   - name: setup
-  #     run: bash setup.sh
-  #     working-directory: cli
-  #     continue-on-error: true
-  #   - name: delete-step
-  #     run: az ml compute delete --name $compute_name --yes || exit 0
-
-###
-# 3. Scoring the new model - TBD in release pipeline
-# 4. Labelling it as challenger if it is good
-###
+  delete-compute:
+    needs: [train-job]
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v2
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: setup
+      run: bash setup.sh
+      working-directory: cli
+      continue-on-error: true
+    - name: delete-step
+      run: az ml compute delete --name $compute_name --yes || exit 0

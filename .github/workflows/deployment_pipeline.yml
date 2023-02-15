@@ -1,7 +1,7 @@
 name: model deployment
 on:
-  # push:
-    # branches: [deploy-automation, main]
+  push:
+    branches: [deploy-automation, main]
   # pull_request:
   #   branches: [ main ]
   #   paths:
@@ -33,5 +33,5 @@ jobs:
     # - name: create-endpoint
       # run: az ml online-endpoint create --name ga-deployment-2
     - name: deployment-step
-      run: az ml online-deployment create -f deploy.yml
+      run: az ml online-deployment create -f deploy.yml --all-traffic
       working-directory: jobs

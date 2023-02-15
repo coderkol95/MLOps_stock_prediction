@@ -34,7 +34,7 @@ Azure ML SDK v2
         - [X] Performance, fairness, bias, equity and other responsible AI metrics to be measured - NA in this case
         - [ ] Model profiling
 
-3. Release pipeline - To deploy : trigger=new model availability
+3. Release pipeline:
 
     There can be need for re-training & re-deployment under two scenarios:
     1. Data drifts frequently and model is updated on schedule( this is the case in this project )

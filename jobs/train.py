@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
+import mlflow.pytorch
 
 class dataset(pl.LightningDataModule):
 
@@ -90,14 +91,14 @@ class model(pl.LightningModule):
         x, y = train_batch 
         logits,_ = self.forward(x.type(torch.float32)) 
         loss = self.loss(logits.float(), y.float()) 
-        self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         return loss
 
     def validation_step(self, valid_batch, batch_idx): 
         x, y = valid_batch 
         logits,_ = self.forward(x.type(torch.float32)) 
         loss = self.loss(logits.float(), y.float())
-        self.log("val_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+        self.log("val_loss", loss, on_epoch=True, prog_bar=True, logger=True)
 
     def test_step(self, test_batch, batch_idx): 
         x, y = test_batch 
@@ -107,10 +108,12 @@ class model(pl.LightningModule):
 
 def train(args):
 
-    trainer=pl.Trainer(max_epochs=5)
+    trainer=pl.Trainer(max_epochs=5, enable_progress_bar=True)
+    mlflow.pytorch.autolog()
     datamod=dataset(args.data)
     mod=model()
-    trainer.fit(model=mod, datamodule=datamod)
+    with mlflow.start_run() as run:
+        trainer.fit(model=mod, datamodule=datamod)
 
     trainer.test(model=mod, datamodule=datamod)
 

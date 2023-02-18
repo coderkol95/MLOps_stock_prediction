@@ -44,7 +44,7 @@ The cron job is `.github/workflows/data_pipeline.yml`
 - Pushes changes to the repository
 - Registers the dataset in Azure ML Studio datastore
 
-Associated files: `jobs/data_upload.yml`, `jobs/data_download.py`, `job/update_yamls.py`
+Associated files: `jobs/data_upload.yml`, `jobs/data_download.py`, `jobs/update_yamls.py`
 # Training pipeline
 
 The cron job is `.github/workflows/model_pipeline.yml`

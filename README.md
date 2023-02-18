@@ -37,9 +37,21 @@ You would need this to access ML Studio
 
 # Data pipeline
 
+The cron job is `.github/workflows/data_pipeline.yml`
+- Initial setup
+- Downloads the data via an API
+- Updates different components' version
+- Pushes changes to the repository
+- Registers the dataset in Azure ML Studio datastore
 
 # Training pipeline
 
+- Initial setup
+- Creates a compute
+- Trains a LSTM model using pytorch lightning on the latest dataset
+- Registers the new model in the workspace
+
 # Deployment pipeline
 
-# 
+- Creates new online endpoint and deployment for the first time
+- For the successive training runs, the new model would be deployed to the existing online endpoint

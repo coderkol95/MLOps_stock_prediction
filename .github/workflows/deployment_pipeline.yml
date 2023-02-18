@@ -1,7 +1,7 @@
 name: model deployment
 on:
-  push:
-    branches: [deploy-automation, main]
+  # push:
+  #   branches: [deploy-automation, main]
   # pull_request:
   #   branches: [ main ]
   #   paths:

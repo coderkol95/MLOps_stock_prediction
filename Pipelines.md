@@ -11,7 +11,7 @@ Azure ML SDK v2
 1. Build pipeline - Code changes to the repository : trigger=push
 
     - [ ] Pytests with code coverage
-    - [ ] github actions during branch merge
+    - [ ] Linting
 
 2. Training pipeline - To train the model when new data is available / re-training is required : trigger=schedule
 

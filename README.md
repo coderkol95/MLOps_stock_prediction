@@ -43,6 +43,7 @@ The cron job is `.github/workflows/data_pipeline.yml`
 - Updates different components' version
 - Pushes changes to the repository
 - Registers the dataset in Azure ML Studio datastore
+
 Associated files: `jobs/data_upload.yml`, `jobs/data_download.py`, `update_yamls.py`
 # Training pipeline
 
@@ -51,10 +52,12 @@ The cron job is `.github/workflows/model_pipeline.yml`
 - Creates a compute
 - Trains a LSTM model using pytorch lightning on the latest dataset
 - Registers the new model in the workspace
+
 Associated files: `jobs/train.yml`, `jobs/train.py`
 # Deployment pipeline
 
 The cron job is `.github/workflows/deployment_pipeline.yml`
 - Creates new online endpoint and deployment for the first time
 - For the successive training runs, the new model would be deployed to the existing online endpoint
+
 Associated files: `jobs/deploy.yml`, `jobs/deployment.py`

@@ -13,7 +13,7 @@
 
 This project implements automated MLOps. Every week it fetches data via an API, registers the data as a dataset in Azure datastore. It updates the versions of required pipeline components like run ID, model version etc.. Then it trains the registers a pytorch LSTM model in Azure ML studio. This model is then deployed to an online endpoint. Everything is done through cron jobs.
 
-To read in more detail, the article for this project is published here: 
+To read in more detail, the article for this project is published here: https://towardsdatascience.com/practical-mlops-using-azure-ml-c6a3cb201d2b
 
 This project is still in development. :) 
 

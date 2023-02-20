@@ -61,3 +61,5 @@ The cron job is `.github/workflows/deployment_pipeline.yml`
 - For the successive training runs, the new model would be deployed to the existing online endpoint
 
 Associated files: `jobs/deploy.yml`, `jobs/deployment.py`
+
+Currently all the cron jobs have been paused and the endpoint has been deleted to avoid costs.

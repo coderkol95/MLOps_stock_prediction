@@ -6,6 +6,9 @@ env:
   registered_model_name: GA_model
 
 on:
+  # schedule:
+  # - cron: "1 2 * * 1"
+
   # push:
     # branches: [training-automation, main]
   # pull-request:
@@ -14,8 +17,7 @@ on:
   #   - .github/workflows/model_pipeline.yml
   #   - jobs/train.py
   #   - jobs/train.yml
-    schedule:
-    - cron: "1 2 * * 1"
+
 
 jobs:
   train-job:

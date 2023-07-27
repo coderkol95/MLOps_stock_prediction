@@ -15,11 +15,11 @@ This project implements automated MLOps. Every week it fetches data via an API, 
 
 To read in more detail, the article for this project is published here: https://towardsdatascience.com/practical-mlops-using-azure-ml-c6a3cb201d2b
 
-This project is still in development. :) 
+This project is still in development. :
 
 Improvement items:
 
-1. Pytests
+1. Pytests during CI
 2. Implement option of monitoring data drift
 3. Model profiling
 4. Infrastructure performance
